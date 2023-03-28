@@ -77,7 +77,7 @@ def generate_outerplanar_graph(num_vertices=10, seed=None):
     return data
 
 
-def generate_grid_graph(num_rows, num_cols, seed=None):
+def generate_grid_graph(num_rows=2, num_cols=5, seed=None):
     """
     Generates a grid graph with given number of rows and columns.
     """

@@ -19,25 +19,49 @@ def parse_args():
 def main():
     args = parse_args()
 
+    check_n = False
+    if args.num_nodes is not None:
+        check_n = True
+
     if args.generate:
         if args.graph_type == 'cycle' or args.graph_type == 'all':
             # generate a new cycle graph and save it to a file
             graph_data = graph.generate_cycle_graph()
             graph.save_graph(graph_data, 'cycle_graph.json')
-        elif args.graph_type == 'tree' or args.graph_type == 'all':
-            graph_data = graph.generate_tree_graph(args.n)
-            graph.save_graph(graph_data, 'tree_graph.json')
-        elif args.graph_type == 'bipartite' or args.graph_type == 'all':
-            if len(args.num_nodes) > 1:
-                graph_data = graph.generate_bipartite_graph(args.num_nodes[0], args.num_nodes[1])
+
+        if args.graph_type == 'tree' or args.graph_type == 'all':
+            if check_n:
+                graph_data = graph.generate_tree_graph(args.num_nodes[0])
             else:
+                graph_data = graph.generate_tree_graph()
+            graph.save_graph(graph_data, 'tree_graph.json')
+
+        if args.graph_type == 'bipartite' or args.graph_type == 'all':
+            if not check_n:
                 graph_data = graph.generate_bipartite_graph()
+            elif len(args.num_nodes) == 1:
+                graph_data = graph.generate_bipartite_graph(args.num_nodes[0])
+            else:
+                graph_data = graph.generate_bipartite_graph(args.num_nodes[0], args.num_nodes[1])
+
             graph.save_graph(graph_data, 'bipartite_graph.json')
-        elif args.graph_type == 'outerplanar' or args.graph_type == 'all':
-            graph_data = graph.generate_outerplanar_graph(args.num_nodes[0])
+
+        if args.graph_type == 'outerplanar' or args.graph_type == 'all':
+            if check_n:
+                graph_data = graph.generate_outerplanar_graph(args.num_nodes[0])
+            else:
+                graph_data = graph.generate_outerplanar_graph()
+
             graph.save_graph(graph_data, 'outerplanar_graph.json')
-        elif args.graph_type == 'grid' or args.graph_type == 'all':
-            graph_data = graph.generate_grid_graph(args.num_nodes[0], args.num_nodes[1])
+
+        if args.graph_type == 'grid' or args.graph_type == 'all':
+            if not check_n:
+                graph_data = graph.generate_grid_graph()
+            elif len(args.num_nodes) == 1:
+                graph_data = graph.generate_grid_graph(args.num_nodes[0])
+            else:
+                graph_data = graph.generate_grid_graph(args.num_nodes[0], args.num_nodes[1])
+
             graph.save_graph(graph_data, 'grid_graph.json')
 
     # load the graph data from the file

@@ -15,21 +15,77 @@ Concerning the installation you just need to go on the root directory and run th
 ```bash
   pip install .
 ```
-
 The project was build with the version of Python 3.7
-    
+
+## CLI Arguments
+
+| Parameter               | Possible value          | Description                						                 |
+|:------------------------|:------------------------|:--------------------------------------------------|
+| `--generated` or `-n`   | `None`   			            | Ask to generate the graphs  					                 |
+| `--graph-type` or `-gt` | Check *list(typeGraph)* | Specifie the type of graph to generate  		        |
+| `--file-name` or `-o`   | `string`.json 		        | Specifie the name where the graph has to be saved |
+| `--num-nodes` or `-n`   | multiple `int`  	       | Use to specifie the number of vertices / edges    |
+| `--complex` or `-c`     | `int` => **Max 5**      | Combine different type of graphs in one           |
+| `--seed` or `s`         | `int`  	                | Specify the seed to use                           |
+| `--clean`               | `None`  	               | Reset the cache of the project                    |
+
+Here is the **list of typeGraph**: 
+- Cycle graphs
+- Tree graphs
+- Bipartite graphs
+- Outer planar graphs
+- Grid graphs
+
 ## Run Locally
 
-To start using the project you have to generate graph
+To start using the project you have to generate at least one graph
 
 ```bash
-  python3 main.py --generate
+  # Let's generate all the graph to start
+  python3 main.py --generate -gt all
 ```
+
+## Usage examples
+
+Here are some example to use the CLI arguments 
+
+1. Generate a Bipartite graph 
+```bash
+  # Creation of bipartite graph with 10 vertices and 10 edges saved on the file bipartite_graph.json
+  python3 graph-drawing/main.py --generate -gt bipartite -n 10 10
+```
+
+2. Create a complex graph that mix 3 distinct types of graph 
+```bash
+  python3 graph-drawing/main.py --complex 3
+```
+
+3. Check a specific previously generated graph
+```bash
+  python3 graph-drawing/main.py --o cycle_graph.json
+```
+
+3. Clean the cache of the project
+```bash
+  python3 graph-drawing/main.py --clean
+```
+
+3. Generate all the graph with the same seed
+```bash
+  python3 graph-drawing/main.py --generate -gt all --seed 10
+```
+
+
 
 ## Features
 
-Right now the program can generated the following type of graphs:
+Right now the program can generate the following type of graphs:
 - Cycle graphs
+- Tree graphs
+- Bipartite graphs
+- Outer planar graphs
+- Grid graphs
+- Complex graph
 
 The implemented drawing algorithms are:
 - None
@@ -38,4 +94,5 @@ The implemented drawing algorithms are:
 ## Authors
 
 - [@thib-info](https://www.github.com/thib-info)
+- [@TomasVdS](https://github.com/TomasVdS)
 

@@ -13,8 +13,11 @@ def generate_cycle_graph(n=10, seed=None):
         random.seed(seed)
 
     graph = nx.cycle_graph(n)
-    data = nx.node_link_data(graph)
+    for node in graph.nodes():
+        graph.nodes[node]['x'] = random.random()
+        graph.nodes[node]['y'] = random.random()
 
+    data = nx.node_link_data(graph)
     save_graph(data, 'cycle_graph.json')
 
     return graph
@@ -28,8 +31,11 @@ def generate_tree_graph(n=10, seed=None):
         random.seed(seed)
 
     graph = nx.random_tree(n)
-    data = nx.readwrite.json_graph.node_link_data(graph)
+    for node in graph.nodes():
+        graph.nodes[node]['x'] = random.random()
+        graph.nodes[node]['y'] = random.random()
 
+    data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'tree_graph.json')
 
     return graph
@@ -52,8 +58,11 @@ def generate_bipartite_graph(num_vertices=10, num_edges=10, seed=None):
     graph.add_nodes_from(right_nodes, bipartite=1)
     graph.add_edges_from(edges)
 
-    data = nx.readwrite.json_graph.node_link_data(graph)
+    for node in graph.nodes():
+        graph.nodes[node]['x'] = random.random()
+        graph.nodes[node]['y'] = random.random()
 
+    data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'bipartite_graph.json')
 
     return graph
@@ -79,8 +88,11 @@ def generate_outerplanar_graph(num_vertices=10, seed=None):
         graph.add_edge(i, num_vertices - 2)
         graph.add_edge(i, num_vertices - 1)
 
-    data = nx.readwrite.json_graph.node_link_data(graph)
+    for node in graph.nodes():
+        graph.nodes[node]['x'] = random.random()
+        graph.nodes[node]['y'] = random.random()
 
+    data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'outerplanar_graph.json')
 
     return graph
@@ -99,8 +111,11 @@ def generate_grid_graph(num_rows=2, num_cols=5, seed=None):
     mapping = {(i, j): i * num_cols + j for i, j in graph.nodes()}
     graph = nx.relabel_nodes(graph, mapping)
 
-    data = nx.readwrite.json_graph.node_link_data(graph)
+    for node in graph.nodes():
+        graph.nodes[node]['x'] = random.random()
+        graph.nodes[node]['y'] = random.random()
 
+    data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'grid_graph.json')
 
     return graph

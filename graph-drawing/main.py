@@ -20,6 +20,7 @@ def parse_args():
     parser.add_argument('--clean', action='store_true', help='Delete all the generated graphs')
     parser.add_argument('-e', '--evaluate', type=str, default='', help='Delete all the generated graphs')
     parser.add_argument('-w', '--weight', action='store_true', help='Define if you want your graph to be weighted or not')
+    parser.add_argument('-d', '--direction', action='store_true', help='Define if you want your graph to be directive or not')
     return parser.parse_args()
 
 
@@ -39,23 +40,23 @@ def generateGraph():
 
     if args.generate:
         if args.graph_type == 'cycle' or args.graph_type == 'all':
-            graph.generate_cycle_graph(args.num_nodes[0], args.seed, args.weight)
+            graph.generate_cycle_graph(args.num_nodes[0], args.seed, args.weight, args.direction)
             graph_to_print = 'cycle_graph.json'
 
         if args.graph_type == 'tree' or args.graph_type == 'all':
-            graph.generate_tree_graph(args.num_nodes[0], args.seed, args.weight)
+            graph.generate_tree_graph(args.num_nodes[0], args.seed, args.weight, args.direction)
             graph_to_print = 'tree_graph.json'
 
         if args.graph_type == 'bipartite' or args.graph_type == 'all':
-            graph.generate_bipartite_graph(args.num_nodes[0], args.num_nodes[1], args.seed, args.weight)
+            graph.generate_bipartite_graph(args.num_nodes[0], args.num_nodes[1], args.seed, args.weight, args.direction)
             graph_to_print = 'bipartite_graph.json'
 
         if args.graph_type == 'outerplanar' or args.graph_type == 'all':
-            graph.generate_outerplanar_graph(args.num_nodes[0], args.seed, args.weight)
+            graph.generate_outerplanar_graph(args.num_nodes[0], args.seed, args.weight, args.direction)
             graph_to_print = 'outerplanar_graph.json'
 
         if args.graph_type == 'grid' or args.graph_type == 'all':
-            graph.generate_grid_graph(args.num_nodes[0], args.num_nodes[1], args.seed, args.weight)
+            graph.generate_grid_graph(args.num_nodes[0], args.num_nodes[1], args.seed, args.weight, args.direction)
             graph_to_print = 'grid_graph.json'
 
     if hasattr(args, 'complex'):
@@ -64,7 +65,7 @@ def generateGraph():
                 print("The number of graph types exceed the ones available. The maximum possible value is " + str(nbr_graph))
                 return -1
             else:
-                graph.generate_complex_graph(args.num_nodes[0], args.num_nodes[1], args.complex, args.seed, args.weight)
+                graph.generate_complex_graph(args.num_nodes[0], args.num_nodes[1], args.complex, args.seed, args.weight, args.direction)
 
         graph_to_print = 'complex_graph.json'
 

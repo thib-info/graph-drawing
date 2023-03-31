@@ -5,7 +5,7 @@ import networkx as nx
 from inspect import signature
 
 
-def generate_cycle_graph(n=10, seed=None):
+def generate_cycle_graph(n=10, seed=None, weight=False):
     """
     Generates a simple cycle graph with n nodes.
     """
@@ -17,13 +17,17 @@ def generate_cycle_graph(n=10, seed=None):
         graph.nodes[node]['x'] = random.random()
         graph.nodes[node]['y'] = random.random()
 
+    if weight:
+        for u, v in graph.edges():
+            graph.edges[u, v]['weight'] = random.randint(1, 10)
+
     data = nx.node_link_data(graph)
     save_graph(data, 'cycle_graph.json')
 
     return graph
 
 
-def generate_tree_graph(n=10, seed=None):
+def generate_tree_graph(n=10, seed=None, weight=False):
     """
     Generates a simple tree graph with n nodes.
     """
@@ -34,6 +38,9 @@ def generate_tree_graph(n=10, seed=None):
     for node in graph.nodes():
         graph.nodes[node]['x'] = random.random()
         graph.nodes[node]['y'] = random.random()
+    if weight:
+        for u, v in graph.edges():
+            graph.edges[u, v]['weight'] = random.randint(1, 10)
 
     data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'tree_graph.json')
@@ -41,7 +48,7 @@ def generate_tree_graph(n=10, seed=None):
     return graph
 
 
-def generate_bipartite_graph(num_vertices=10, num_edges=10, seed=None):
+def generate_bipartite_graph(num_vertices=10, num_edges=10, seed=None, weight=False):
     """
     Generates a bipartite graph with given number of vertices and edges.
     """
@@ -61,6 +68,9 @@ def generate_bipartite_graph(num_vertices=10, num_edges=10, seed=None):
     for node in graph.nodes():
         graph.nodes[node]['x'] = random.random()
         graph.nodes[node]['y'] = random.random()
+    if weight:
+        for u, v in graph.edges():
+            graph.edges[u, v]['weight'] = random.randint(1, 10)
 
     data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'bipartite_graph.json')
@@ -68,7 +78,7 @@ def generate_bipartite_graph(num_vertices=10, num_edges=10, seed=None):
     return graph
 
 
-def generate_outerplanar_graph(num_vertices=10, seed=None):
+def generate_outerplanar_graph(num_vertices=10, seed=None, weight=False):
     """
     Generates an outerplanar graph with given number of vertices.
     """
@@ -91,6 +101,9 @@ def generate_outerplanar_graph(num_vertices=10, seed=None):
     for node in graph.nodes():
         graph.nodes[node]['x'] = random.random()
         graph.nodes[node]['y'] = random.random()
+    if weight:
+        for u, v in graph.edges():
+            graph.edges[u, v]['weight'] = random.randint(1, 10)
 
     data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'outerplanar_graph.json')
@@ -98,7 +111,7 @@ def generate_outerplanar_graph(num_vertices=10, seed=None):
     return graph
 
 
-def generate_grid_graph(num_rows=2, num_cols=5, seed=None):
+def generate_grid_graph(num_rows=2, num_cols=5, seed=None, weight=False):
     """
     Generates a grid graph with given number of rows and columns.
     """
@@ -114,6 +127,9 @@ def generate_grid_graph(num_rows=2, num_cols=5, seed=None):
     for node in graph.nodes():
         graph.nodes[node]['x'] = random.random()
         graph.nodes[node]['y'] = random.random()
+    if weight:
+        for u, v in graph.edges():
+            graph.edges[u, v]['weight'] = random.randint(1, 10)
 
     data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'grid_graph.json')
@@ -121,7 +137,7 @@ def generate_grid_graph(num_rows=2, num_cols=5, seed=None):
     return graph
 
 
-def generate_complex_graph(num_vertices=10, num_edges=10, num_graph_types=3, seed=None):
+def generate_complex_graph(num_vertices=10, num_edges=10, num_graph_types=3, seed=None, weight=False):
     """
     Generates a complex graph by combining multiple types of graphs.
     """
@@ -146,9 +162,9 @@ def generate_complex_graph(num_vertices=10, num_edges=10, num_graph_types=3, see
 
         # Pass the correct number of arguments to the function
         if num_args == 2:
-            graph = graph_funcs[i](num_vertices, seed)
+            graph = graph_funcs[i](num_vertices, seed, weight)
         elif num_args == 3:
-            graph = graph_funcs[i](num_vertices, num_edges, seed)
+            graph = graph_funcs[i](num_vertices, num_edges, seed, weight)
         else:
             raise ValueError(f"Invalid number of arguments for graph function {graph_funcs[i].__name__}")
 

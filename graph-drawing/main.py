@@ -24,10 +24,32 @@ def parse_args():
     return parser.parse_args()
 
 
+def visualizeGraph(graph_to_print):
+    args = parse_args()
+
+    # load the graph data from the file
+    if args.filename is not None:
+        G = graph.load_graph(args.filename)
+    elif graph_to_print != '':
+        G = graph.load_graph(graph_to_print)
+    else:
+        print("You have to generate at least one graph OR specify the graph that you want to print")
+        return -1
+
+    # visualize the graph using networkx
+    pos = nx.spring_layout(G, seed=10)
+    nx.draw(G, pos=pos, with_labels=True)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+
+    # show the plot
+    plt.show()
+
+
 def generateGraph():
     args = parse_args()
     graph_to_print = ''
-    nbr_graph = 4
+    nbr_graph = 5
 
     if args.clean:
         try:
@@ -69,23 +91,7 @@ def generateGraph():
 
         graph_to_print = 'complex_graph.json'
 
-    # load the graph data from the file
-    if args.filename is not None:
-        G = graph.load_graph(args.filename)
-    elif graph_to_print != '':
-        G = graph.load_graph(graph_to_print)
-    else:
-        print("You have to generate at least one graph OR specify the graph that you want to print")
-        return -1
-
-    # visualize the graph using networkx
-    pos = nx.circular_layout(G)
-    nx.draw(G, pos=pos, with_labels=True)
-    labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
-
-    # show the plot
-    plt.show()
+    visualizeGraph(graph_to_print)
 
 
 def evaluateGraph():
@@ -94,6 +100,8 @@ def evaluateGraph():
     if args.evaluate != '':
         G = Graph('../stocked-graph/' + args.evaluate)
         print(G)
+
+    visualizeGraph(args.evaluate)
 
 
 def main():

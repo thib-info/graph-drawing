@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm,macos,visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm,macos,visualstudiocode,python
 
+# Remvove the stocked graphs
+/graph-drawing/stocked-graph
+
 ### macOS ###
 # General
 .DS_Store

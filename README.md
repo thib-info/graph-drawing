@@ -117,8 +117,7 @@ The characteristics for a graph printed are:
 - Edges length
 - Crossing number
 - Minimum area 
-- If the graph is symetric or not
-- Number of bends
+- If the graph is symmetric or not
 - The compactness
 - The clustering
 

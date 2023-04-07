@@ -16,9 +16,10 @@ class Graph:
         self.crossing_number = char.calculate_crossing_number(self.graph)
         self.minimum_area = char.calculate_minimum_area(self.graph)
         self.is_symmetric = char.is_symmetric(self)
-        self.number_bends = char.calculate_edge_bends(self)
         self.compactness = char.calculate_compactness(self.graph)
         self.clustering = char.calculate_clustering(self)
+
+        # self.number_bends = char.calculate_edge_bends(self) --> No need to print number of bends for now
 
         if self.is_directed:
             # Don't take into account the direction, but only check if each edges are connected
@@ -56,8 +57,9 @@ class Graph:
         output += f"Crossing Number: {self.crossing_number}\n"
         output += f"Minimum area: {self.minimum_area}\n"
         output += f"Is symmetric: {self.is_symmetric}\n"
-        output += f"Number of bends per edges: {self.number_bends}\n"
         output += f"Compacness of the graph: {self.compactness}\n"
         output += f"Clustering of the graph: {self.clustering}\n"
+
+        # output += f"Number of bends per edges: {self.number_bends}\n"
 
         return output

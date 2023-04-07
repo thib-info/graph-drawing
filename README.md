@@ -19,15 +19,19 @@ The project was build with the version of Python 3.7
 
 ## CLI Arguments
 
-| Parameter               | Possible value          | Description                						                 |
-|:------------------------|:------------------------|:--------------------------------------------------|
-| `--generated` or `-n`   | `None`   			            | Ask to generate the graphs  					                 |
-| `--graph-type` or `-gt` | Check *list(typeGraph)* | Specifie the type of graph to generate  		        |
-| `--file-name` or `-o`   | `string`.json 		        | Specifie the name where the graph has to be saved |
-| `--num-nodes` or `-n`   | multiple `int`  	       | Use to specifie the number of vertices / edges    |
-| `--complex` or `-c`     | `int` => **Max 5**      | Combine different type of graphs in one           |
-| `--seed` or `s`         | `int`  	                | Specify the seed to use                           |
-| `--clean`               | `None`  	               | Reset the cache of the project                    |
+| Parameter               | Possible value                     | Description                						                 |
+|:------------------------|:-----------------------------------|:--------------------------------------------------|
+| `--generated` or `-n`   | `None`   			                       | Ask to generate the graphs  					                 |
+| `--graph-type` or `-gt` | Check *list(typeGraph)*            | Specifie the type of graph to generate  		        |
+| `--file-name` or `-o`   | `string`.json 		                   | Specifie the name where the graph has to be saved |
+| `--num-nodes` or `-n`   | multiple `int`  	                  | Use to specifie the number of vertices / edges    |
+| `--complex` or `-c`     | `int` => **Max 5**                 | Combine different type of graphs in one           |
+| `--seed` or `s`         | `int`  	                           | Specify the seed to use                           |
+| `--clean`               | `None`  	                          | Reset the cache of the project                    |
+| `--weight` or `-w`      | `None`  	                          | Add weight to the edges of the graph              |
+| `--direction` or `-d`   | `None`  	                          | Add direction to the edges of the graph           |
+| `--evaluate` or `-e`     | `str` => name of the graph file  	 | Evaluate the graph with all the characteristics   |
+
 
 Here is the **list of typeGraph**: 
 - Cycle graphs
@@ -35,6 +39,7 @@ Here is the **list of typeGraph**:
 - Bipartite graphs
 - Outer planar graphs
 - Grid graphs
+- Complex graph (mixing the different types presented before)
 
 ## Run Locally
 
@@ -43,6 +48,13 @@ To start using the project you have to generate at least one graph
 ```bash
   # Let's generate all the graph to start
   python3 main.py --generate -gt all
+```
+
+After generating at least one graph, you can evaluate him and check all his characteristics with the following command
+
+```bash
+  # Evaluate one graph
+  python3 main.py --evaluate <name of the graph>
 ```
 
 ## Usage examples
@@ -65,14 +77,20 @@ Here are some example to use the CLI arguments
   python3 graph-drawing/main.py --o cycle_graph.json
 ```
 
-3. Clean the cache of the project
+4. Clean the cache of the project
 ```bash
   python3 graph-drawing/main.py --clean
 ```
 
-3. Generate all the graph with the same seed
+5. Generate all the graph with the same seed
 ```bash
   python3 graph-drawing/main.py --generate -gt all --seed 10
+```
+
+6. Evaluate a graph to see all its characteristics
+```bash
+  # Evaluate the cycle graph previously generated
+  python3 graph-drawing/main.py --evaluate cycle_graph.json
 ```
 
 
@@ -90,6 +108,19 @@ Right now the program can generate the following type of graphs:
 The implemented drawing algorithms are:
 - None
 
+The characteristics for a graph printed are:
+- Number of vertices
+- Number of edges
+- Direction of the graph
+- Weight of the graph
+- If the graph is planar or not
+- Edges length
+- Crossing number
+- Minimum area 
+- If the graph is symetric or not
+- Number of bends
+- The compactness
+- The clustering
 
 ## Authors
 

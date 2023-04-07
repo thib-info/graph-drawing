@@ -194,13 +194,24 @@ def generate_complex_graph(num_vertices=3, num_edges=2, num_graph_types=3, seed=
     return complex_graph
 
 
-def generate_atlas_graph(weight=False):
+def generate_atlas_graph(index=-1, weight=False):
     """
     Generation of a graph coming form the atlas: https://global.oup.com/academic/product/an-atlas-of-graphs-9780198526506?cc=fr&lang=en&
     Number of available graph: 1253
+
+    !!! If you want a random graph specify -n -1 during the generation of the graph !!!
     """
+    correct = True
     max_length = 1253
-    index = random.randint(1, max_length)
+    if index <= -1 or index > 1253:
+        print(
+            "Your index is invalid and will be generated randomly\nRules to follow:\n1. Positive number\n2. Less than "
+            "1253")
+        correct = False
+
+    if not correct:
+        index = random.randint(1, max_length)
+
     graph = nx.classes.graph.Graph(nx.graph_atlas(index))
 
     addPosition(graph)

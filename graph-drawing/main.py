@@ -82,7 +82,7 @@ def generateGraph():
             graph_to_print = 'grid_graph.json'
 
         if args.graph_type == 'atlas' or args.graph_type == 'all':
-            graph.generate_atlas_graph(args.weight)
+            graph.generate_atlas_graph(args.num_nodes[0], args.weight)
             graph_to_print = 'atlas_graph.json'
 
     if hasattr(args, 'complex'):

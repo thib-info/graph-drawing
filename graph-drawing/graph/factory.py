@@ -194,6 +194,26 @@ def generate_complex_graph(num_vertices=3, num_edges=2, num_graph_types=3, seed=
     return complex_graph
 
 
+def generate_atlas_graph(weight=False):
+    """
+    Generation of a graph coming form the atlas: https://global.oup.com/academic/product/an-atlas-of-graphs-9780198526506?cc=fr&lang=en&
+    Number of available graph: 1253
+    """
+    max_length = 1253
+    index = random.randint(1, max_length)
+    graph = nx.classes.graph.Graph(nx.graph_atlas(index))
+
+    addPosition(graph)
+    if weight:
+        addWeight(graph)
+
+    # Save the complex graph as JSON
+    data = nx.readwrite.json_graph.node_link_data(graph)
+    save_graph(data, "atlas_graph.json")
+
+    return graph
+
+
 def save_graph(graph_data, filename):
     """
     Saves the graph data to a JSON file with the specified filename.

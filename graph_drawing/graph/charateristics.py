@@ -36,7 +36,7 @@ def calculate_edge_length(graph):
     for u, v in graph.edges:
         edge_weight = graph.edges[u, v].get("weight", 1.0)  # default weight is 1.0
         total_length += edge_weight * math.sqrt(
-            (graph.nodes[u]['x'] - graph.nodes[v]['x']) ** 2 + (graph.nodes[u]['y'] - graph.nodes[v]['y']) ** 2)
+            (graph.nodes[u]['pos'][0] - graph.nodes[v]['pos'][0]) ** 2 + (graph.nodes[u]['pos'][1] - graph.nodes[v]['pos'][1]) ** 2)
     return total_length
 
 
@@ -47,8 +47,8 @@ def calculate_minimum_area(graph):
     max_y = -math.inf
 
     for node in graph.nodes():
-        x = graph.nodes[node]['x']
-        y = graph.nodes[node]['y']
+        x = graph.nodes[node]['pos'][0]
+        y = graph.nodes[node]['pos'][1]
         if x < min_x:
             min_x = x
         if x > max_x:

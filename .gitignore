@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm,macos,visualstudiocode,python
 
 # Remvove the stocked graphs
-/graph-drawing/stocked-graph
+/graph_drawing/stocked-graph
 
 ### macOS ###
 # General

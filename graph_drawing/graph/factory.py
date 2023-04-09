@@ -6,9 +6,10 @@ from inspect import signature
 
 
 def addPosition(graph):
-    for node in graph.nodes():
-        graph.nodes[node]['x'] = random.random()
-        graph.nodes[node]['y'] = random.random()
+    for node, data in graph.nodes(data=True):
+        x = random.random()
+        y = random.random()
+        data['pos'] = (x, y)
 
 
 def addWeight(graph):
@@ -146,6 +147,28 @@ def generate_grid_graph(num_rows=2, num_cols=2, seed=None, weight=False, directi
 
     data = nx.readwrite.json_graph.node_link_data(graph)
     save_graph(data, 'grid_graph.json')
+
+    return graph
+
+
+def generate_complete_graph(n=3, seed=None, weight=False, direction=False):
+    """
+    Generates a simple complete graph with n nodes.
+    """
+    if seed is not None:
+        random.seed(seed)
+
+    if direction:
+        graph = nx.complete_graph(n, create_using=nx.DiGraph)
+    else:
+        graph = nx.complete_graph(n, seed)
+
+    addPosition(graph)
+    if weight:
+        addWeight(graph)
+
+    data = nx.node_link_data(graph)
+    save_graph(data, 'complete_graph.json')
 
     return graph
 

@@ -35,6 +35,7 @@ Here is the **list of typeGraph**:
 - Bipartite graphs
 - Outer planar graphs
 - Grid graphs
+- Complete graph
 
 ## Run Locally
 
@@ -52,27 +53,27 @@ Here are some example to use the CLI arguments
 1. Generate a Bipartite graph 
 ```bash
   # Creation of bipartite graph with 10 vertices and 10 edges saved on the file bipartite_graph.json
-  python3 graph-drawing/main.py --generate -gt bipartite -n 10 10
+  python3 graph_drawing/main.py --generate -gt bipartite -n 10 10
 ```
 
 2. Create a complex graph that mix 3 distinct types of graph 
 ```bash
-  python3 graph-drawing/main.py --complex 3
+  python3 graph_drawing/main.py --complex 3
 ```
 
 3. Check a specific previously generated graph
 ```bash
-  python3 graph-drawing/main.py --o cycle_graph.json
+  python3 graph_drawing/main.py --o cycle_graph.json
 ```
 
 3. Clean the cache of the project
 ```bash
-  python3 graph-drawing/main.py --clean
+  python3 graph_drawing/main.py --clean
 ```
 
 3. Generate all the graph with the same seed
 ```bash
-  python3 graph-drawing/main.py --generate -gt all --seed 10
+  python3 graph_drawing/main.py --generate -gt all --seed 10
 ```
 
 
@@ -85,7 +86,11 @@ Right now the program can generate the following type of graphs:
 - Bipartite graphs
 - Outer planar graphs
 - Grid graphs
+- Complete graph
 - Complex graph
+
+The implemented algorithms are:
+- The DMP planar algorithm in *dmp_algo.py*
 
 The implemented drawing algorithms are:
 - None

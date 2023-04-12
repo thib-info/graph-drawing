@@ -27,6 +27,7 @@ The project was build with the version of Python 3.7
 | `--num-nodes` or `-n`   | multiple `int`  	       | Use to specifie the number of vertices / edges    |
 | `--complex` or `-c`     | `int` => **Max 5**      | Combine different type of graphs in one           |
 | `--seed` or `s`         | `int`  	                | Specify the seed to use                           |
+| `--report` or `-r`      | `str`                    | Specify the name to give to the report            |
 | `--clean`               | `None`  	               | Reset the cache of the project                    |
 
 Here is the **list of typeGraph**: 
@@ -76,6 +77,10 @@ Here are some example to use the CLI arguments
   python3 graph_drawing/main.py --generate -gt all --seed 10
 ```
 
+4. Analyse a specific generated graph and save each iteration of algorithms inside a pdf
+```bash
+  python3 graph_drawing/main.py --generate -gt cycle -n 5 --report cycle
+```
 
 
 ## Features
@@ -94,6 +99,9 @@ The implemented algorithms are:
 
 The implemented drawing algorithms are:
 - None
+
+To save and analyze iteration of an algorithm we can use the option *--report*
+to save all of their plots inside a pdf.
 
 
 ## Authors

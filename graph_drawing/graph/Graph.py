@@ -7,7 +7,7 @@ from algo import dmp_algo as dmp
 
 
 class Graph:
-    def __init__(self, path):
+    def __init__(self, path, save):
         self.path = path
         self.graph = factory.load_graph(self.path)
         self.num_vertices = self.graph.number_of_nodes()
@@ -22,7 +22,7 @@ class Graph:
         self.number_bends = char.calculate_edge_bends(self)
         self.compactness = char.calculate_compactness(self.graph)
         self.clustering = char.calculate_clustering(self)
-        self.is_planar_DMP = dmp.is_planar_DMP(self.graph)
+        self.is_planar_DMP = dmp.is_planar_DMP(self.graph, save)
 
         if self.is_directed:
             # Don't take into account the direction, but only check if each edges are connected

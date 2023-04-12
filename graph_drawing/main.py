@@ -21,6 +21,8 @@ def parse_args():
     parser.add_argument('-e', '--evaluate', type=str, default='', help='Delete all the generated graphs')
     parser.add_argument('-w', '--weight', action='store_true', help='Define if you want your graph to be weighted or not')
     parser.add_argument('-d', '--direction', action='store_true', help='Define if you want your graph to be directive or not')
+    parser.add_argument('-r', '--report', type=str, default='',
+                        help='Save screenshot of the given graph into the pdf you specified')
     return parser.parse_args()
 
 
@@ -102,7 +104,10 @@ def evaluateGraph():
     args = parse_args()
 
     if args.evaluate != '':
-        G = Graph('../stocked-graph/' + args.evaluate)
+        if args.report != '':
+            G = Graph('../stocked-graph/' + args.evaluate, args.report)
+        else:
+            G = Graph('../stocked-graph/' + args.evaluate, None)
         print(G)
 
     visualizeGraph(args.evaluate)

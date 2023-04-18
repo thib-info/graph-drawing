@@ -18,7 +18,6 @@ Concerning the installation you just need to go on the root directory and run th
 The project was build with the version of Python 3.7
 
 ## CLI Arguments
-
 | Parameter               | Possible value                     | Description                						                 |
 |:------------------------|:-----------------------------------|:--------------------------------------------------|
 | `--generated` or `-n`   | `None`   			                       | Ask to generate the graphs  					                 |
@@ -44,7 +43,6 @@ Here is the **list of typeGraph**:
 - Graph from the atlas (*atlas*)
 
 > :information_source: **The atlas graph is a list handled by *networkx library*.**: The number of graph available is 1253
-
 
 ## Run Locally
 
@@ -92,12 +90,16 @@ Here are some example to use the CLI arguments
   python3 graph_drawing/main.py --generate -gt all --seed 10
 ```
 
-6. Evaluate a graph to see all its characteristics
+6. Analyse a specific generated graph and save each iteration of algorithms inside a pdf
 ```bash
-  # Evaluate the cycle graph previously generated
-  python3 graph-drawing/main.py --evaluate cycle_graph.json
+  python3 graph_drawing/main.py --generate -gt cycle -n 5 --evaluate cycle_graph.json --report cycle
 ```
 
+7. Evaluate a graph to see all its characteristics
+```bash
+  # Evaluate the cycle graph previously generated
+  python3 graph_drawing/main.py --evaluate cycle_graph.json
+```
 
 
 ## Features
@@ -117,6 +119,9 @@ The implemented algorithms are:
 
 The implemented drawing algorithms are:
 - None
+
+To save and analyze iteration of an algorithm we can use the option *--report*
+to save all of their plots inside a pdf.
 
 The characteristics for a graph printed are:
 - Number of vertices

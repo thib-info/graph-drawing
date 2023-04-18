@@ -252,7 +252,6 @@ def save_graph(graph_data, filename):
     """
     Saves the graph data to a JSON file with the specified filename.
     """
-    print(os.path.exists('./graph_drawing/stocked-graph'))
     if not os.path.exists('./graph_drawing/stocked-graph'):
         os.mkdir('./graph_drawing/stocked-graph')
     with open(os.path.join('./graph_drawing/stocked-graph', filename), 'w') as f:

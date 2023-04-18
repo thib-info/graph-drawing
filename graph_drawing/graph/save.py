@@ -4,7 +4,7 @@ import networkx as nx
 
 
 def create_pdf_page(name):
-    path = './stocked-graph/report/' + name + '.pdf'
+    path = './graph_drawing/stocked-graph/report/' + name + '.pdf'
     pdf = matplotlib.backends.backend_pdf.PdfPages(path)
     return pdf
 

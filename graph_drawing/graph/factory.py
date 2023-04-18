@@ -217,13 +217,44 @@ def generate_complex_graph(num_vertices=3, num_edges=2, num_graph_types=3, seed=
     return complex_graph
 
 
+def generate_atlas_graph(index=-1, weight=False):
+    """
+    Generation of a graph coming form the atlas: https://global.oup.com/academic/product/an-atlas-of-graphs-9780198526506?cc=fr&lang=en&
+    Number of available graph: 1253
+
+    !!! If you want a random graph specify -n -1 during the generation of the graph !!!
+    """
+    correct = True
+    max_length = 1253
+    if index <= -1 or index > 1253:
+        print(
+            "Your index is invalid and will be generated randomly\nRules to follow:\n1. Positive number\n2. Less than "
+            "1253")
+        correct = False
+
+    if not correct:
+        index = random.randint(1, max_length)
+
+    graph = nx.classes.graph.Graph(nx.graph_atlas(index))
+
+    addPosition(graph)
+    if weight:
+        addWeight(graph)
+
+    # Save the complex graph as JSON
+    data = nx.readwrite.json_graph.node_link_data(graph)
+    save_graph(data, "atlas_graph.json")
+
+    return graph
+
+
 def save_graph(graph_data, filename):
     """
     Saves the graph data to a JSON file with the specified filename.
     """
-    if not os.path.exists('stocked-graph'):
-        os.mkdir('stocked-graph')
-    with open(os.path.join('stocked-graph', filename), 'w') as f:
+    if not os.path.exists('./graph_drawing/stocked-graph'):
+        os.mkdir('./graph_drawing/stocked-graph')
+    with open(os.path.join('./graph_drawing/stocked-graph', filename), 'w') as f:
         json.dump(graph_data, f)
 
 
@@ -231,6 +262,6 @@ def load_graph(filename):
     """
     Loads a graph from a JSON file with the specified filename.
     """
-    with open(os.path.join('stocked-graph', filename), 'r') as f:
+    with open(os.path.join('./graph_drawing/stocked-graph', filename), 'r') as f:
         data = json.load(f)
     return nx.node_link_graph(data)

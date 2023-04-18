@@ -10,7 +10,7 @@ def is_planar_DMP(graph, save):
     # Make a copy of the graph so that we can modify it without changing the original
     H = graph.copy()
 
-    #Create the pdf if the save if defined
+    # Create the pdf if the save if defined
     pdf = None
     if save is not None:
         pdf = sv.create_pdf_page(save + '-dmpAlgo')

@@ -13,7 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Generate and visualize graphs.')
     parser.add_argument('-g', '--generate', action='store_true', help='generate a new graph')
     parser.add_argument('-o', '--filename', type=str, default=None, help='filename for the graph data')
-    parser.add_argument('-gt', '--graph-type', type=str, default="cycle", choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "complete"], help="Type of graph to generate")
+    parser.add_argument('-gt', '--graph-type', type=str, default="cycle", choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "atlas", "complete"], help="Type of graph to generate")
     parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-s', '--seed', type=int, default=None, help='Define the seed you want to apply')
     parser.add_argument('-c', '--complex', type=int, default=argparse.SUPPRESS, help='Define the number of graph to generate and combine into a commun graph')
@@ -85,6 +85,10 @@ def generateGraph():
             graph.generate_grid_graph(args.num_nodes[0], args.num_nodes[1], args.seed, args.weight, args.direction)
             graph_to_print = 'grid_graph.json'
 
+        if args.graph_type == 'atlas' or args.graph_type == 'all':
+            graph.generate_atlas_graph(args.num_nodes[0], args.weight)
+            graph_to_print = 'atlas_graph.json'
+
     if hasattr(args, 'complex'):
         if args.complex is not None:
             if args.complex > nbr_graph:
@@ -100,10 +104,11 @@ def generateGraph():
 
 def evaluateGraph():
     args = parse_args()
+    if args.evaluate == '':
+        return -1
 
-    if args.evaluate != '':
-        G = Graph('../stocked-graph/' + args.evaluate)
-        print(G)
+    G = Graph('../stocked-graph/' + args.evaluate)
+    print(G)
 
     visualizeGraph(args.evaluate)
 

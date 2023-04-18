@@ -19,10 +19,11 @@ class Graph:
         self.crossing_number = char.calculate_crossing_number(self.graph)
         self.minimum_area = char.calculate_minimum_area(self.graph)
         self.is_symmetric = char.is_symmetric(self)
-        self.number_bends = char.calculate_edge_bends(self)
         self.compactness = char.calculate_compactness(self.graph)
         self.clustering = char.calculate_clustering(self)
         self.is_planar_DMP = dmp.is_planar_DMP(self.graph)
+
+        # self.number_bends = char.calculate_edge_bends(self) --> No need to print number of bends for now
 
         if self.is_directed:
             # Don't take into account the direction, but only check if each edges are connected

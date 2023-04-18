@@ -34,12 +34,16 @@ The project was build with the version of Python 3.7
 
 
 Here is the **list of typeGraph**: 
-- Cycle graphs
-- Tree graphs
-- Bipartite graphs
-- Outer planar graphs
-- Grid graphs
+- Cycle graphs (*cycle*)
+- Tree graphs (*tree*)
+- Bipartite graphs (*bipartite*)
+- Outer planar graphs (*outerplanar*)
+- Grid graphs (*grid*)
 - Complex graph (mixing the different types presented before)
+- Graph from the atlas (*atlas*)
+
+> :information_source: **The atlas graph is a list handled by *networkx library*.**: The number of graph available is 1253
+
 
 ## Run Locally
 
@@ -104,6 +108,7 @@ Right now the program can generate the following type of graphs:
 - Outer planar graphs
 - Grid graphs
 - Complex graph
+- Atlas graph
 
 The implemented drawing algorithms are:
 - None
@@ -125,4 +130,5 @@ The characteristics for a graph printed are:
 
 - [@thib-info](https://www.github.com/thib-info)
 - [@TomasVdS](https://github.com/TomasVdS)
+- [@TiboDeCock](https://github.com/TiboDeCock)
 

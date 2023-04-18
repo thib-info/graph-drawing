@@ -1,6 +1,9 @@
 import networkx as nx
+from tabulate import tabulate
+
 from . import factory
 from . import charateristics as char
+from algo import dmp_algo as dmp
 
 
 class Graph:
@@ -18,6 +21,7 @@ class Graph:
         self.is_symmetric = char.is_symmetric(self)
         self.compactness = char.calculate_compactness(self.graph)
         self.clustering = char.calculate_clustering(self)
+        self.is_planar_DMP = dmp.is_planar_DMP(self.graph)
 
         # self.number_bends = char.calculate_edge_bends(self) --> No need to print number of bends for now
 
@@ -45,21 +49,21 @@ class Graph:
         return total_length
 
     def __str__(self):
-        output = ""
-        output += f"Graph Path: {self.path}\n"
-        output += f"Number of Vertices: {self.num_vertices}\n"
-        output += f"Number of Edges: {self.num_edges}\n"
-        output += f"Is Directed: {self.is_directed}\n"
-        output += f"Is Weighted: {self.is_weighted}\n"
-        output += f"Is Connected: {self.is_connected}\n"
-        output += f"Is Planar: {self.is_planar}\n"
-        output += f"Edge Length: {self.edge_length}\n"
-        output += f"Crossing Number: {self.crossing_number}\n"
-        output += f"Minimum area: {self.minimum_area}\n"
-        output += f"Is symmetric: {self.is_symmetric}\n"
-        output += f"Compacness of the graph: {self.compactness}\n"
-        output += f"Clustering of the graph: {self.clustering}\n"
-
-        # output += f"Number of bends per edges: {self.number_bends}\n"
-
-        return output
+        table = [
+            ['Graph Path:', self.path],
+            ['Number of Vertices:', self.num_vertices],
+            ['Number of Edges:', self.num_edges],
+            ['Is Directed:', self.is_directed],
+            ['Is Weighted:', self.is_weighted],
+            ['Is Connected:', self.is_connected],
+            ['Is Planar:', self.is_planar],
+            ['Is Planar with DMP algo:', self.is_planar_DMP],
+            #['Edge Length:', self.edge_length],
+            ['Crossing Number:', self.crossing_number],
+            #['Minimum area:', self.minimum_area],
+            ['Is symmetric:', self.is_symmetric],
+            ['Compacness of the graph:', self.compactness],
+            ['Clustering of the graph:', self.clustering],
+            # ['Number of bends per edges:', self.number_bends],
+        ]
+        return tabulate(table, headers=['Attribute', 'Value'], tablefmt='orgtbl')

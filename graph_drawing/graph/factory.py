@@ -6,9 +6,10 @@ from inspect import signature
 
 
 def addPosition(graph):
-    for node in graph.nodes():
-        graph.nodes[node]['x'] = random.random()
-        graph.nodes[node]['y'] = random.random()
+    for node, data in graph.nodes(data=True):
+        x = random.random()
+        y = random.random()
+        data['pos'] = (x, y)
 
 
 def addWeight(graph):
@@ -150,6 +151,28 @@ def generate_grid_graph(num_rows=2, num_cols=2, seed=None, weight=False, directi
     return graph
 
 
+def generate_complete_graph(n=3, seed=None, weight=False, direction=False):
+    """
+    Generates a simple complete graph with n nodes.
+    """
+    if seed is not None:
+        random.seed(seed)
+
+    if direction:
+        graph = nx.complete_graph(n, create_using=nx.DiGraph)
+    else:
+        graph = nx.complete_graph(n, seed)
+
+    addPosition(graph)
+    if weight:
+        addWeight(graph)
+
+    data = nx.node_link_data(graph)
+    save_graph(data, 'complete_graph.json')
+
+    return graph
+
+
 def generate_complex_graph(num_vertices=3, num_edges=2, num_graph_types=3, seed=None, weight=False, direction=False):
     """
     Generates a complex graph by combining multiple types of graphs.
@@ -229,9 +252,10 @@ def save_graph(graph_data, filename):
     """
     Saves the graph data to a JSON file with the specified filename.
     """
-    if not os.path.exists('stocked-graph'):
-        os.mkdir('stocked-graph')
-    with open(os.path.join('stocked-graph', filename), 'w') as f:
+    print(os.path.exists('./graph_drawing/stocked-graph'))
+    if not os.path.exists('./graph_drawing/stocked-graph'):
+        os.mkdir('./graph_drawing/stocked-graph')
+    with open(os.path.join('./graph_drawing/stocked-graph', filename), 'w') as f:
         json.dump(graph_data, f)
 
 
@@ -239,6 +263,6 @@ def load_graph(filename):
     """
     Loads a graph from a JSON file with the specified filename.
     """
-    with open(os.path.join('stocked-graph', filename), 'r') as f:
+    with open(os.path.join('./graph_drawing/stocked-graph', filename), 'r') as f:
         data = json.load(f)
     return nx.node_link_graph(data)

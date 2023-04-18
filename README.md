@@ -33,12 +33,13 @@ The project was build with the version of Python 3.7
 | `--evaluate` or `-e`     | `str` => name of the graph file  	 | Evaluate the graph with all the characteristics   |
 
 
-Here is the **list of typeGraph**: 
+Here is the **list of typeGraph**:
 - Cycle graphs (*cycle*)
 - Tree graphs (*tree*)
 - Bipartite graphs (*bipartite*)
 - Outer planar graphs (*outerplanar*)
 - Grid graphs (*grid*)
+- Complete graph (*complete*)
 - Complex graph (mixing the different types presented before)
 - Graph from the atlas (*atlas*)
 
@@ -68,27 +69,27 @@ Here are some example to use the CLI arguments
 1. Generate a Bipartite graph 
 ```bash
   # Creation of bipartite graph with 10 vertices and 10 edges saved on the file bipartite_graph.json
-  python3 graph-drawing/main.py --generate -gt bipartite -n 10 10
+  python3 graph_drawing/main.py --generate -gt bipartite -n 10 10
 ```
 
 2. Create a complex graph that mix 3 distinct types of graph 
 ```bash
-  python3 graph-drawing/main.py --complex 3
+  python3 graph_drawing/main.py --complex 3
 ```
 
 3. Check a specific previously generated graph
 ```bash
-  python3 graph-drawing/main.py --o cycle_graph.json
+  python3 graph_drawing/main.py --o cycle_graph.json
 ```
 
 4. Clean the cache of the project
 ```bash
-  python3 graph-drawing/main.py --clean
+  python3 graph_drawing/main.py --clean
 ```
 
 5. Generate all the graph with the same seed
 ```bash
-  python3 graph-drawing/main.py --generate -gt all --seed 10
+  python3 graph_drawing/main.py --generate -gt all --seed 10
 ```
 
 6. Evaluate a graph to see all its characteristics
@@ -107,8 +108,12 @@ Right now the program can generate the following type of graphs:
 - Bipartite graphs
 - Outer planar graphs
 - Grid graphs
+- Complete graph
 - Complex graph
 - Atlas graph
+
+The implemented algorithms are:
+- The DMP planar algorithm in *dmp_algo.py*
 
 The implemented drawing algorithms are:
 - None

@@ -1,16 +1,17 @@
 from setuptools import setup
 
 setup(
-    name='graph-drawing',
+    name='graph_drawing',
     version='0.1',
     install_requires=[
         'networkx',
         'matplotlib',
         'argparse',
+        'tabulate',
     ],
     entry_points={
         'console_scripts': [
-            'graph-drawing = main.main:main'
+            'graph_drawing = main.main:main'
         ]
     }
 )

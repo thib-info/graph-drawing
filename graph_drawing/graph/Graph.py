@@ -7,7 +7,7 @@ from algo import dmp_algo as dmp
 
 
 class Graph:
-    def __init__(self, path, save):
+    def __init__(self, path, save=None):
         self.path = path
         self.graph = factory.load_graph(self.path)
         self.num_vertices = self.graph.number_of_nodes()

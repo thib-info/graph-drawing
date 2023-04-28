@@ -4,7 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import shutil
 from graph.Graph import Graph
-
+from algo.force_direct import force_direct_figure
 
 def parse_args():
     """
@@ -28,6 +28,8 @@ def parse_args():
                         help='Define if you want your graph to be directive or not')
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
+    parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
+    parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
     return parser.parse_args()
 
 
@@ -128,7 +130,11 @@ def evaluateGraph():
 
 def main():
     generateGraph()
-    evaluateGraph()
+    args = parse_args()
+    if args.force_direct:
+        force_direct_figure(args.graph_type + '_graph.json', args.iterations)
+    else:          
+        evaluateGraph()
 
 
 if __name__ == '__main__':

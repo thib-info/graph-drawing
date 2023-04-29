@@ -18,18 +18,19 @@ Concerning the installation you just need to go on the root directory and run th
 The project was build with the version of Python 3.7
 
 ## CLI Arguments
-| Parameter               | Possible value                     | Description                						                 |
-|:------------------------|:-----------------------------------|:--------------------------------------------------|
-| `--generated` or `-n`   | `None`   			                       | Ask to generate the graphs  					                 |
-| `--graph-type` or `-gt` | Check *list(typeGraph)*            | Specifie the type of graph to generate  		        |
-| `--file-name` or `-o`   | `string`.json 		                   | Specifie the name where the graph has to be saved |
-| `--num-nodes` or `-n`   | multiple `int`  	                  | Use to specifie the number of vertices / edges    |
-| `--complex` or `-c`     | `int` => **Max 5**                 | Combine different type of graphs in one           |
-| `--seed` or `s`         | `int`  	                           | Specify the seed to use                           |
-| `--clean`               | `None`  	                          | Reset the cache of the project                    |
-| `--weight` or `-w`      | `None`  	                          | Add weight to the edges of the graph              |
-| `--direction` or `-d`   | `None`  	                          | Add direction to the edges of the graph           |
-| `--evaluate` or `-e`     | `str` => name of the graph file  	 | Evaluate the graph with all the characteristics   |
+| Parameter               | Possible value                     | Description                						                        |
+|:------------------------|:-----------------------------------|:---------------------------------------------------------|
+| `--generated` or `-n`   | `None`   			                       | Ask to generate the graphs  					                        |
+| `--graph-type` or `-gt` | Check *list(typeGraph)*            | Specifie the type of graph to generate  		               |
+| `--file-name` or `-o`   | `string`.json 		                   | Specifie the name where the graph has to be saved        |
+| `--num-nodes` or `-n`   | multiple `int`  	                  | Use to specifie the number of vertices / edges           |
+| `--complex` or `-c`     | `int` => **Max 5**                 | Combine different type of graphs in one                  |
+| `--seed` or `s`         | `int`  	                           | Specify the seed to use                                  |
+| `--clean`               | `None`  	                          | Reset the cache of the project                           |
+| `--weight` or `-w`      | `None`  	                          | Add weight to the edges of the graph                     |
+| `--direction` or `-d`   | `None`  	                          | Add direction to the edges of the graph                  |
+| `--evaluate` or `-e`    | `str` => name of the graph file  	 | Evaluate the graph with all the characteristics          |
+| `--algo` or `-a`        | `str` => name of the algo to use   | Choose one drawing algorithm to apply to the given graph |
 
 
 Here is the **list of typeGraph**:
@@ -101,6 +102,12 @@ Here are some example to use the CLI arguments
   python3 graph_drawing/main.py --evaluate cycle_graph.json
 ```
 
+8. Apply the complete algo to a given graph 
+```bash
+  # Evaluate the cycle graph previously generated
+  python3 graph_drawing/main.py --evaluate cycle_graph.json -a complete
+```
+
 
 ## Features
 
@@ -117,7 +124,7 @@ Right now the program can generate the following type of graphs:
 The implemented algorithms are:
 - The DMP planar algorithm in *dmp_algo.py*
 - The complete graph drawing algorithm in *complete_algo.py*
-- The circular layout drawing algorithm in *complete_alog
+- The circular layout drawing algorithm in *circular_layout.py*
 
 The implemented drawing algorithms are:
 - None

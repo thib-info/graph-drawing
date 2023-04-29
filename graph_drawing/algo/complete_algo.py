@@ -19,8 +19,26 @@ def complete_graph(graph):
                 complete_G.add_edge(u, v)
                 sv.save_screenshot(complete_G, name)
 
-    #new_position = circular_layout(complete_G)
-    #print(new_position)
+    # Load the new position for a circular layout
+    new_position = circular_layout(complete_G)
+
+    # Change one by one the position of each nodes to get a nice visualization of the process
+    transition_pos = {}
+    ind = 0
+    for node in complete_G.nodes():
+        x, y = complete_G.nodes[node]['pos']
+        transition_pos[ind] = (x, y)
+        ind += 1
+
+    i = 0
+    for pos in new_position:
+        transition_pos[i] = new_position[pos]
+        nx.set_node_attributes(complete_G, transition_pos, 'pos')
+        sv.save_screenshot(complete_G, name)
+        i += 1
+
+    nx.set_node_attributes(complete_G, new_position, 'pos')
+    sv.save_screenshot(complete_G, name)
 
     # Save the gif
     sv.create_gif_from_images(name)
@@ -29,10 +47,14 @@ def complete_graph(graph):
 
 
 def circular_layout(G, center=None, scale=1):
-    if center is None:
-        # Compute the center point of the graph
-        center = [sum([pos[0] for pos in G.nodes.values()]) / len(G),
-                  sum([pos[1] for pos in G.nodes.values()]) / len(G)]
+    # Compute the center point of the graph
+    x_sum = 0
+    y_sum = 0
+    for node in G.nodes():
+        x, y = G.nodes[node]['pos']
+        x_sum += x
+        y_sum += y
+    center = [x_sum / len(G), y_sum / len(G)]
 
     positions = {}
 
@@ -59,5 +81,4 @@ def circular_layout(G, center=None, scale=1):
         positions[node] = (x, y)
 
     return positions
-
 

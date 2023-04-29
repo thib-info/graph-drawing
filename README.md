@@ -116,6 +116,8 @@ Right now the program can generate the following type of graphs:
 
 The implemented algorithms are:
 - The DMP planar algorithm in *dmp_algo.py*
+- The complete graph drawing algorithm in *complete_algo.py*
+- The circular layout drawing algorithm in *complete_alog
 
 The implemented drawing algorithms are:
 - None

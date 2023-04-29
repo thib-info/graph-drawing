@@ -51,9 +51,12 @@ def init_gif(name):
 
 
 def create_gif_from_images(name):
+    def sort_by_number(filename):
+        return int(''.join(filter(str.isdigit, filename)))
+
     folder_path = './graph_drawing/stocked-graph/' + name
 
-    frames = [Image.open(image) for image in glob.glob(f"{folder_path}/*.png")]
+    frames = [Image.open(image) for image in sorted(glob.glob(f"{folder_path}/*.png"), key=sort_by_number)]
     frame_one = frames[0]
     frame_one.save(folder_path + '/' + name + '.gif', format="GIF", append_images=frames,
-                   save_all=True, duration=100*len(frames), loop=0)
+                   save_all=True, duration=100 * len(frames), loop=0)

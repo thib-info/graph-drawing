@@ -4,10 +4,11 @@ from tabulate import tabulate
 from . import factory
 from . import charateristics as char
 from algo import dmp_algo as dmp
+from algo import complete_algo as complete
 
 
 class Graph:
-    def __init__(self, path, save):
+    def __init__(self, path, save, algo):
         self.path = path
         self.graph = factory.load_graph(self.path)
         self.num_vertices = self.graph.number_of_nodes()
@@ -30,6 +31,11 @@ class Graph:
             self.is_connected = nx.is_strongly_connected(self.graph)
         else:
             self.is_connected = nx.is_connected(self.graph)
+
+        # Apply the given algo to the graph
+        if algo is not '':
+            if algo == 'complete':
+                complete.complete_graph(self.graph)
 
     def is_weighted_graph(self):
         for u, v in self.graph.edges():

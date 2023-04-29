@@ -13,10 +13,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Generate and visualize graphs.')
     parser.add_argument('-g', '--generate', action='store_true', help='generate a new graph')
     parser.add_argument('-o', '--filename', type=str, default=None, help='filename for the graph data')
+    parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-gt', '--graph-type', type=str, default="cycle",
                         choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "atlas", "complete"],
                         help="Type of graph to generate")
-    parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-s', '--seed', type=int, default=None, help='Define the seed you want to apply')
     parser.add_argument('-c', '--complex', type=int, default=argparse.SUPPRESS,
                         help='Define the number of graph to generate and combine into a commun graph')
@@ -28,6 +28,9 @@ def parse_args():
                         help='Define if you want your graph to be directive or not')
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
+    parser.add_argument('-a', '--algo', type=str, default='',
+                        choices=["complete"],
+                        help='Select the algo you want to apply to your graph')
     return parser.parse_args()
 
 
@@ -118,9 +121,9 @@ def evaluateGraph():
 
     if args.evaluate != '':
         if args.report != '':
-            G = Graph('../stocked-graph/' + args.evaluate, args.report)
+            G = Graph('../stocked-graph/' + args.evaluate, args.report, args.algo)
         else:
-            G = Graph('../stocked-graph/' + args.evaluate, None)
+            G = Graph('../stocked-graph/' + args.evaluate, None, args.algo)
         print(G)
 
     visualizeGraph(args.evaluate)

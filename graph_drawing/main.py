@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import shutil
 from graph.Graph import Graph
+from algo import dmp_algo
 
 
 def parse_args():
@@ -29,7 +30,7 @@ def parse_args():
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
     parser.add_argument('-a', '--algo', type=str, default='',
-                        choices=["complete"],
+                        choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')
     return parser.parse_args()
 
@@ -126,12 +127,54 @@ def evaluateGraph():
             G = Graph('../stocked-graph/' + args.evaluate, None, args.algo)
         print(G)
 
-    visualizeGraph(args.evaluate)
+    if args.algo == '':
+        visualizeGraph(args.evaluate)
+
+
+def plot_graph(graph, name):
+    plt.subplots(1, 3)  # set subplot position
+    pos = {int(n): data['pos'] for n, data in graph.nodes(data=True)}
+    nx.draw(graph, pos=pos, with_labels=True)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.title(name)  # set subplot title
+
+
+def presentation():
+
+    G1 = graph.load_graph('cycle_graph.json')
+    G2 = graph.load_graph('complete_graph.json')
+    G3 = graph.load_graph('tree_graph.json')
+
+    # create a grid of 1 row and 3 columns of subplots
+    fig, axs = plt.subplots(1, 3)
+
+    # plot the first graph on the first subplot
+    pos = {int(n): data['pos'] for n, data in G1.nodes(data=True)}
+    nx.draw(G1, pos=pos, with_labels=True, ax=axs[0])
+    axs[0].set_title("Cycle graph")
+
+    # plot the second graph on the second subplot
+    pos = {int(n): data['pos'] for n, data in G2.nodes(data=True)}
+    nx.draw(G2, pos=pos, with_labels=True, ax=axs[1])
+    axs[1].set_title("Complete graph")
+
+    # plot the third graph on the third subplot
+    pos = {int(n): data['pos'] for n, data in G3.nodes(data=True)}
+    nx.draw(G3, pos=pos, with_labels=True, ax=axs[2])
+    axs[2].set_title("Tree graph")
+
+    # adjust the spacing between the subplots
+    plt.subplots_adjust(wspace=1.5)
+
+    # show the plot
+    plt.show()
 
 
 def main():
     generateGraph()
     evaluateGraph()
+    #presentation()
 
 
 if __name__ == '__main__':

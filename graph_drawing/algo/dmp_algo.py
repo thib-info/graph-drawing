@@ -9,14 +9,21 @@ def is_planar_DMP(graph, save):
     """
     # Make a copy of the graph so that we can modify it without changing the original
     H = graph.copy()
+    name = "dmp-gif"
 
     # Create the pdf if the save if defined
     pdf = None
     if save is not None:
         pdf = sv.create_pdf_page(save + '-dmpAlgo')
 
+    # Init the gif
+    sv.init_gif(name)
+
     # While the graph has more than 3 vertices
     while len(H) > 3:
+        # Save the screenshot of the current graph
+        sv.save_screenshot(H, name)
+
         # Find a vertex of degree <= 2
         v = None
         for node in H.nodes():
@@ -36,6 +43,9 @@ def is_planar_DMP(graph, save):
 
     if pdf is not None:
         sv.close_pdf_page(pdf)
+
+    # Create the GIF
+    sv.create_gif_from_images(name)
 
     # If the resulting graph has at most 3 vertices, it is planar
     return True

@@ -123,6 +123,8 @@ The implemented drawing algorithms are:
 To save and analyze iteration of an algorithm we can use the option *--report*
 to save all of their plots inside a pdf.
 
+We can also save our iterations inside an algorithm as a .gif format
+
 The characteristics for a graph printed are:
 - Number of vertices
 - Number of edges

@@ -1,21 +1,36 @@
 import networkx as nx
 import math
 import matplotlib
+import graph.Graph 
+from algo.dmp_algo import dmp_planar_embedding
 
 
+def get_pos(G):
+    '''
+    Get the position of the nodes in graph G
+    '''
 
-def canonical(graph):
-    H = graph.copy()
+    print(G.graph)
+    pos = {}
+    for node, data in G.graph.nodes(data=True):
+        pos[node] = data['pos']
+
+    return pos
+
+def canonical(G):
+    H = G.graph.copy()
 
     k = H.number_of_nodes()
-    pos = nx.planar_layout(H)
+    pos = get_pos(G)
+    #pos = nx.planar_layout(H)
 
     min_x = math.inf
     max_x = -math.inf
     min_y = math.inf
     max_y = -math.inf
 
-    for node in graph.nodes():
+
+    for node in G.graph.nodes():
         x = pos[node][0]
         y = pos[node][1]
         if x < min_x:
@@ -76,11 +91,12 @@ def canonical(graph):
                     break
     return order
 
-
-G = nx.Graph()
-G.add_nodes_from([(0),(1),(2),(3),(4)])
-G.add_edges_from([(0,1), (0,2), (0,3), (0,4), (1,2), (1,3),(1,4), (2,3), (3,4)])
-pos = nx.planar_layout(G)
-print(pos)
-print(canonical(G))
+def grid_figure(graph_path):
+    G = graph.Graph.Graph(graph_path)
+    #G = dmp_planar_embedding(G)
+    print(G.num_vertices)
+    pos = get_pos(G)
+    #pos = nx.planar_layout(G)
+    print(pos)
+    print(canonical(G))
 

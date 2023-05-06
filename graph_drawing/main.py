@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import shutil
 from graph.Graph import Graph
+import algo.Grid
 
 
 def parse_args():
@@ -28,6 +29,7 @@ def parse_args():
                         help='Define if you want your graph to be directive or not')
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
+    parser.add_argument('-grid', action= 'store_true')
     return parser.parse_args()
 
 
@@ -125,11 +127,18 @@ def evaluateGraph():
 
     visualizeGraph(args.evaluate)
 
+def grid():
+    args = parse_args()
+    if args.grid:
+        algo.Grid.grid_figure(args.graph_type + '_graph.json')
+
 
 def main():
     generateGraph()
     evaluateGraph()
+    grid()
 
 
 if __name__ == '__main__':
     main()
+    

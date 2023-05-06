@@ -1,8 +1,9 @@
 import networkx as nx
 import math
-import matplotlib
+import matplotlib.pyplot as plt
 import graph.Graph 
 from algo.dmp_algo import dmp_planar_embedding
+import graph.factory as f
 
 
 def get_pos(G):
@@ -17,11 +18,20 @@ def get_pos(G):
 
     return pos
 
-def canonical(G):
-    H = G.graph.copy()
+def get_posH(H):
 
-    k = H.number_of_nodes()
-    pos = get_pos(G)
+    pos = {}
+    for node, data in H.nodes(data=True):
+        pos[node] = data['pos']
+
+    return pos
+
+
+def canonical(G):
+    H = G.copy()
+
+    k = G.number_of_nodes()
+    pos = get_posH(G)
     #pos = nx.planar_layout(H)
 
     min_x = math.inf
@@ -30,7 +40,7 @@ def canonical(G):
     max_y = -math.inf
 
 
-    for node in G.graph.nodes():
+    for node in G.nodes():
         x = pos[node][0]
         y = pos[node][1]
         if x < min_x:
@@ -70,8 +80,12 @@ def canonical(G):
     for u in H.neighbors(w):
         if u not in ext:
             ext.append(u)
+
+    nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold')                  
+    plt.show()
     H.remove_node(w)
-    
+    nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold')                  
+    plt.show()
     
 
 
@@ -87,16 +101,32 @@ def canonical(G):
                         if u not in ext:
                             ext.append(u)
                     H.remove_node(j)
-                    
+                    nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold')                  
+                    plt.show()
+
                     break
+    
     return order
 
 def grid_figure(graph_path):
+
+    G1 = nx.Graph()
+    G1.add_nodes_from([(1),(2),(3),(4),(5),(6)])
+    G1.add_edges_from([(1,2),(1,4),(1,5),(2,3),(2,4),(2,5),(2,6),(3,4),(3,6),(4,5),(4,6)])
+    
+    f.addPosition(G1)
+
+    #nx.draw(G1, with_labels=True, font_weight='bold')   
+    #plt.show()
+
+    data = nx.readwrite.json_graph.node_link_data(G1)
+    f.save_graph(data, 'G1.json')
+    
+    G1 = graph.Graph.Graph('G1.json')
+
     G = graph.Graph.Graph(graph_path)
-    #G = dmp_planar_embedding(G)
-    print(G.num_vertices)
-    pos = get_pos(G)
+    G = dmp_planar_embedding(G)
+    G1 = dmp_planar_embedding(G1)
     #pos = nx.planar_layout(G)
-    print(pos)
     print(canonical(G))
 

@@ -139,6 +139,8 @@ def get_fragment(graph, subgraph):
     sub_nodes = subgraph.nodes
     subg_edge = subgraph.edges
 
+    graph = graph.graph
+
     # Get all the edges to use to form our fragments
     links = set()
     for sub_node in sub_nodes:
@@ -309,7 +311,7 @@ def plot_subgraph(graph):
 
 def dmp_planar_embedding(graph):
     # Copy of the given graph to make all the modifications
-    H = graph.copy()
+    H = graph.graph.copy()
 
     name = "dmp-algo-planar-ambedding"
     sv.init_gif(name)

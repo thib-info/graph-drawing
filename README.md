@@ -147,6 +147,7 @@ The characteristics for a graph printed are:
 - The compactness
 - The clustering
 
+
 ## Authors
 
 - [@thib-info](https://www.github.com/thib-info)

@@ -5,7 +5,9 @@ from tabulate import tabulate
 from . import factory
 from . import charateristics as char
 from algo import dmp_algo as dmp
+from algo import Grid
 from algo import complete_algo as complete
+
 
 
 class Graph:

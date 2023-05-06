@@ -29,6 +29,7 @@ def parse_args():
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
     parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
+    parser.add_argument('-fdt', '--force-direct type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
     parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
     return parser.parse_args()
 
@@ -127,14 +128,17 @@ def evaluateGraph():
 
     visualizeGraph(args.evaluate)
 
-
-def main():
-    generateGraph()
+def force_direct():
     args = parse_args()
     if args.force_direct:
         force_direct_figure(args.graph_type + '_graph.json', args.iterations)
-    else:          
-        evaluateGraph()
+    
+
+
+def main():
+    generateGraph()
+    evaluateGraph()
+    force_direct()
 
 
 if __name__ == '__main__':

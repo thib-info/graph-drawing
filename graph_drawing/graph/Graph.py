@@ -9,7 +9,9 @@ from algo import complete_algo as complete
 
 
 class Graph:
-    def __init__(self, path, save, algo):
+
+    def __init__(self, path, save=None, algo):
+
         self.path = path
         self.graph = factory.load_graph(self.path)
         self.num_vertices = self.graph.number_of_nodes()

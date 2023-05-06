@@ -4,6 +4,7 @@ from tabulate import tabulate
 from . import factory
 from . import charateristics as char
 from algo import dmp_algo as dmp
+from algo import Grid
 
 
 class Graph:
@@ -22,6 +23,7 @@ class Graph:
         self.compactness = char.calculate_compactness(self.graph)
         self.clustering = char.calculate_clustering(self)
         self.is_planar_DMP = dmp.is_planar_DMP(self.graph, save)
+        self.canonical = Grid.canonical(self.graph)
 
         # self.number_bends = char.calculate_edge_bends(self) --> No need to print number of bends for now
 

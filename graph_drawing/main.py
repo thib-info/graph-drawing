@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import shutil
 from graph.Graph import Graph
 import algo.Grid
+from algo.force_direct import force_direct_figure
+from algo import dmp_algo
 
 
 def parse_args():
@@ -14,10 +16,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Generate and visualize graphs.')
     parser.add_argument('-g', '--generate', action='store_true', help='generate a new graph')
     parser.add_argument('-o', '--filename', type=str, default=None, help='filename for the graph data')
+    parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-gt', '--graph-type', type=str, default="cycle",
                         choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "atlas", "complete"],
                         help="Type of graph to generate")
-    parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-s', '--seed', type=int, default=None, help='Define the seed you want to apply')
     parser.add_argument('-c', '--complex', type=int, default=argparse.SUPPRESS,
                         help='Define the number of graph to generate and combine into a commun graph')
@@ -30,6 +32,13 @@ def parse_args():
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
     parser.add_argument('-grid', action= 'store_true')
+    parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
+    parser.add_argument('-fdt', '--force-direct type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
+    parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
+    parser.add_argument('-a', '--algo', type=str, default='',
+                        choices=["complete", "dmp"],
+                        help='Select the algo you want to apply to your graph')
+
     return parser.parse_args()
 
 
@@ -120,12 +129,58 @@ def evaluateGraph():
 
     if args.evaluate != '':
         if args.report != '':
-            G = Graph('../stocked-graph/' + args.evaluate, args.report)
+            G = Graph('../stocked-graph/' + args.evaluate, args.report, args.algo)
         else:
-            G = Graph('../stocked-graph/' + args.evaluate, None)
+            G = Graph('../stocked-graph/' + args.evaluate, None, args.algo)
         print(G)
 
-    visualizeGraph(args.evaluate)
+    if args.algo == '':
+        visualizeGraph(args.evaluate)
+
+
+def plot_graph(graph, name):
+    plt.subplots(1, 3)  # set subplot position
+    pos = {int(n): data['pos'] for n, data in graph.nodes(data=True)}
+    nx.draw(graph, pos=pos, with_labels=True)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.title(name)  # set subplot title
+
+
+def presentation():
+
+    G1 = graph.load_graph('cycle_graph.json')
+    G2 = graph.load_graph('complete_graph.json')
+    G3 = graph.load_graph('tree_graph.json')
+
+    # create a grid of 1 row and 3 columns of subplots
+    fig, axs = plt.subplots(1, 3)
+
+    # plot the first graph on the first subplot
+    pos = {int(n): data['pos'] for n, data in G1.nodes(data=True)}
+    nx.draw(G1, pos=pos, with_labels=True, ax=axs[0])
+    axs[0].set_title("Cycle graph")
+
+    # plot the second graph on the second subplot
+    pos = {int(n): data['pos'] for n, data in G2.nodes(data=True)}
+    nx.draw(G2, pos=pos, with_labels=True, ax=axs[1])
+    axs[1].set_title("Complete graph")
+
+    # plot the third graph on the third subplot
+    pos = {int(n): data['pos'] for n, data in G3.nodes(data=True)}
+    nx.draw(G3, pos=pos, with_labels=True, ax=axs[2])
+    axs[2].set_title("Tree graph")
+
+    # adjust the spacing between the subplots
+    plt.subplots_adjust(wspace=1.5)
+
+    # show the plot
+    plt.show()
+
+def force_direct():
+    args = parse_args()
+    if args.force_direct:
+        force_direct_figure(args.graph_type + '_graph.json', args.iterations)
 
 def grid():
     args = parse_args()
@@ -137,8 +192,9 @@ def main():
     generateGraph()
     evaluateGraph()
     grid()
-
+    force_direct()
+    #presentation()
 
 if __name__ == '__main__':
-    main()
-    
+    main()    
+

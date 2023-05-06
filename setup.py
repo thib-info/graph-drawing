@@ -8,6 +8,8 @@ setup(
         'matplotlib',
         'argparse',
         'tabulate',
+        'imageio',
+        'numpy',
     ],
     entry_points={
         'console_scripts': [

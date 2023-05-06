@@ -135,7 +135,7 @@ The characteristics for a graph printed are:
 - If the graph is symmetric or not
 - The compactness
 - The clustering
--change
+
 
 ## Authors
 

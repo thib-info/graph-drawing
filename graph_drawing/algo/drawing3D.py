@@ -83,7 +83,7 @@ def figure_3D(graph_path, M=1000, type="Eades"):
     k, t0 = 1, 0.1
 
     #choose plotting instances
-    p1, p2, p3 = 10, 50, 100 
+    p1, p2, p3 = 1, 5, 50 
 
     # configure subplots
     width = 4
@@ -96,6 +96,7 @@ def figure_3D(graph_path, M=1000, type="Eades"):
 
     # draw the first subplot
     subax1 = fig.add_subplot(141, projection='3d')
+    subax1.set_title('initial figure')
     nodes = np.array([pos[v] for v in G.nodes()])
     edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
     # plot the nodes
@@ -198,6 +199,7 @@ def figure_3D(graph_path, M=1000, type="Eades"):
         # draw graph at different stages
         if i == p1:
             subax2 = fig.add_subplot(142, projection='3d')
+            subax2.set_title('i = '+ str(p1))
             nodes = np.array([pos[v] for v in G.nodes()])
             edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
             # plot the nodes
@@ -208,6 +210,7 @@ def figure_3D(graph_path, M=1000, type="Eades"):
 
         elif i == p2:
             subax3 = fig.add_subplot(143, projection='3d')
+            subax3.set_title('i = '+ str(p2))
             nodes = np.array([pos[v] for v in G.nodes()])
             edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
             # plot the nodes
@@ -218,6 +221,7 @@ def figure_3D(graph_path, M=1000, type="Eades"):
 
         elif i == p3:
             subax4 = fig.add_subplot(144, projection='3d')
+            subax4.set_title('i = '+ str(p3))
             nodes = np.array([pos[v] for v in G.nodes()])
             edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
             # plot the nodes

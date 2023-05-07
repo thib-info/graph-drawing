@@ -12,7 +12,7 @@ from algo import complete_algo as complete
 
 class Graph:
 
-    def __init__(self, path, save=None, algo):
+    def __init__(self, path, save=None, algo=None):
 
         self.path = path
         self.graph = factory.load_graph(self.path)

@@ -31,7 +31,7 @@ The project was build with the version of Python 3.7
 | `--direction` or `-d`   | `None`  	                          | Add direction to the edges of the graph                  |
 | `--evaluate` or `-e`    | `str` => name of the graph file  	 | Evaluate the graph with all the characteristics          |
 | `--algo` or `-a`        | `str` => name of the algo to use   | Choose one drawing algorithm to apply to the given graph |
-
+| `-grid`                 | `None`  	                         | Compute the canonical order, draw the steps of grid algorithm |
 
 Here is the **list of typeGraph**:
 - Cycle graphs (*cycle*)
@@ -125,9 +125,7 @@ The implemented algorithms are:
 - The DMP planar algorithm in *dmp_algo.py*
 - The complete graph drawing algorithm in *complete_algo.py*
 - The circular layout drawing algorithm in *circular_layout.py*
-
-The implemented drawing algorithms are:
-- None
+- Grid drawing: shift method in *Grid.py*
 
 To save and analyze iteration of an algorithm we can use the option *--report*
 to save all of their plots inside a pdf.

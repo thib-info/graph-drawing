@@ -185,7 +185,8 @@ def force_direct():
 def grid():
     args = parse_args()
     if args.grid:
-        algo.Grid.grid_figure(args.graph_type + '_graph.json')
+        algo.Grid.grid_canonical(args.graph_type + '_graph.json')
+        algo.Grid.grid_layout(args.graph_type + '_graph.json')
 
 
 def main():

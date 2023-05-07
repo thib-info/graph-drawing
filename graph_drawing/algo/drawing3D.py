@@ -1,16 +1,15 @@
-from graph.Graph import Graph   
-import graph.factory as f
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 from math import log10, sqrt, log
-import graph.save as sv
+from mpl_toolkits.mplot3d import Axes3D
+from graph.Graph import Graph
+
 
 def get_pos(G):
     '''
     Get the position of the nodes in graph G
     '''
-    list = G.graph.nodes(data=True)
     pos = {}
     for node, data in G.graph.nodes(data=True):
         pos[node] = data['pos']
@@ -49,13 +48,33 @@ def fr_FR(k, total_distance):
     total_force = -k^2/total_distance
     return total_force
 
-def force_direct_figure(graph_path, M=1000, type="Eades"):
+def figure_3D(graph_path, M=1000, type="Eades"):
     '''
     Run the force direct algorithm on graph G for M iterations.
     The type is either 'Eades' (type=0) or 'Fruchterman and Reingold' (type=1) 
     '''
+    
+    G = Graph(graph_path).graph
+    
+    # random layout
+    pos = nx.random_layout(G, dim=3, seed=333)
 
-    G = Graph(graph_path)
+    # node and edge positions
+    nodes = np.array([pos[v] for v in G.nodes()])
+    edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
+
+    fig = plt.figure()
+    subax0 = fig.add_subplot(111, projection="3d")
+
+    # plot the nodes
+    subax0.scatter(*nodes.T, s=100, ec="w", color='blue')
+
+    # plot the edges
+    for edge in edges:
+        subax0.plot(*edge.T, color='black')
+
+    plt.show()
+
 
     #configure fd-Eades variables
     c1, c2, c3, c4, M = 2,1,1,0.1,M
@@ -64,7 +83,7 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
     k, t0 = 1, 0.1
 
     #choose plotting instances
-    p1, p2, p3 = 10, 20, 30 
+    p1, p2, p3 = 10, 50, 100 
 
     # configure subplots
     width = 4
@@ -72,32 +91,39 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
 
     # make sure width = length for each subplot
     width_size = 8
-    plt.figure(figsize=(width_size,width_size/width*length))
+    fig = plt.figure(figsize=(width_size,width_size/width*length))
+    fig.tight_layout()
 
     # draw the first subplot
-    subax1 = plt.subplot(141)
-    nx.draw(G.graph, pos = get_pos(G), with_labels=True, font_weight='bold')
+    subax1 = fig.add_subplot(141, projection='3d')
+    nodes = np.array([pos[v] for v in G.nodes()])
+    edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
+    # plot the nodes
+    subax1.scatter(*nodes.T, s=100, ec="w", color='blue')
+    # plot the edges
+    for edge in edges:
+        subax1.plot(*edge.T, color='black')
 
-    # get the position of G
-    pos = get_pos(G)
 
     # iterate
     for i in range(M):
 
-        forcex = np.zeros(G.num_vertices)
-        forcey = np.zeros(G.num_vertices)
+        forcex = np.zeros(G.number_of_nodes())
+        forcey = np.zeros(G.number_of_nodes())
+        forcez = np.zeros(G.number_of_nodes())
 
         if type == "FR":  
             # cool temperature t
             t = t0/(i+1)
 
         # calculate attractive forces
-        for u, v in G.graph.edges():
+        for u, v in G.edges():
 
             x_distance = pos[v][0] - pos[u][0]
             y_distance = pos[v][1] - pos[u][1]
+            z_distance = pos[v][2] - pos[u][2]
             #total_distance = (x_distance**2 + y_distance**2)*G.graph.edges[u,v].get('weight', 1.0)
-            total_distance = sqrt(x_distance**2 + y_distance**2)
+            total_distance = sqrt(x_distance**2 + y_distance**2 + z_distance**2)
 
             if total_distance != 0:
 
@@ -117,14 +143,19 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
                 forcey[u] += total_force*y_distance/total_distance
                 forcey[v] += -total_force*y_distance/total_distance
 
+                forcez[u] += total_force*z_distance/total_distance
+                forcez[v] += -total_force*z_distance/total_distance
+
         # calculate repulsive forces
-        for u in G.graph.nodes():
-            for v in G.graph.nodes():
-                if (u, v) not in G.graph.edges() and u > v:
+        for u in G.nodes():
+            for v in G.nodes():
+                if (u, v) not in G.edges() and u > v:
 
                     x_distance = pos[v][0] - pos[u][0]
                     y_distance = pos[v][1] - pos[u][1]
-                    total_distance = sqrt(x_distance**2 + y_distance**2)
+                    z_distance = pos[v][2] - pos[u][2]
+                    
+                    total_distance = sqrt(x_distance**2 + y_distance**2 + z_distance**2)
 
                     total_force = c3/total_distance**2
                     if type == "Eades":
@@ -142,52 +173,78 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
 
                     forcey[u] -= total_force*y_distance/total_distance
                     forcey[v] += total_force*y_distance/total_distance
+                    
+                    forcez[u] -= total_force*z_distance/total_distance
+                    forcez[v] += total_force*z_distance/total_distance
         
-        for u in G.graph.nodes():
+        for u in G.nodes():
             if type == "Eades":        
                 pos[u][0] += forcex[u]*c4 
                 pos[u][1] += forcey[u]*c4
+                pos[u][2] += forcez[u]*c4
             if type == "FR":
-                total_force = sqrt(forcex[u]^2 + forcey[u]^2)
+                total_force = sqrt(forcex[u]**2 + forcey[u]**2 + forcez[u]**2)
 
                 # limit max movement to temperature t
                 pos[u][0] += min(forcex[u], forcex[u]/total_force*t)    
                 pos[u][1] += min(forcey[u], forcey[u]/total_force*t)
+                pos[u][2] += min(forcez[u], forcez[u]/total_force*t)
 
                 # limit movement to remain in the frame
                 pos[u][0] = min(1, max(-1, pos[u][0]))
                 pos[u][1] = min(1, max(-1, pos[u][1]))
-        
+                pos[u][2] = min(1, max(-1, pos[u][2]))
+
         # draw graph at different stages
         if i == p1:
-            subax2 = plt.subplot(142)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+            subax2 = fig.add_subplot(142, projection='3d')
+            nodes = np.array([pos[v] for v in G.nodes()])
+            edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
+            # plot the nodes
+            subax2.scatter(*nodes.T, s=100, ec="w", color='blue')
+            # plot the edges
+            for edge in edges:
+                subax2.plot(*edge.T, color='black')
 
         elif i == p2:
-            subax3 = plt.subplot(143)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+            subax3 = fig.add_subplot(143, projection='3d')
+            nodes = np.array([pos[v] for v in G.nodes()])
+            edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
+            # plot the nodes
+            subax3.scatter(*nodes.T, s=100, ec="w", color='blue')
+            # plot the edges
+            for edge in edges:
+                subax3.plot(*edge.T, color='black')
 
         elif i == p3:
-            subax4 = plt.subplot(144)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-            plt.show()
+            subax4 = fig.add_subplot(144, projection='3d')
+            nodes = np.array([pos[v] for v in G.nodes()])
+            edges = np.array([(pos[u], pos[v]) for u, v in G.edges()])
+            # plot the nodes
+            subax4.scatter(*nodes.T, s=100, ec="w", color='blue')
+            # plot the edges
+            for edge in edges:
+                subax4.plot(*edge.T, color='black')
+    
 
         #TODO: gif implementation
 
-
+    plt.show()
+    '''
     # normalize the node positions        
     umax = 0
 
-    for u in G.graph.nodes():
-        if max(abs(pos[u][0]), abs(pos[u][1])) > umax: 
-            umax = max(abs(pos[u][0]), abs(pos[u][1]))
+    for u in G.nodes():
+        if max(abs(pos[u][0]), abs(pos[u][1]), abs(pos[u][2])) > umax: 
+            umax = max(abs(pos[u][0]), abs(pos[u][1]), abs(pos[u][2]))
     
-    for u in G.graph.nodes():
+    for u in G.nodes():
         pos[u][0]/=umax
         pos[u][1]/=umax
+        pos[u][2]/=umax
     
-    nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+    nx.draw(G.graph, with_labels=True, font_weight='bold')
     plt.show()
+    '''
 
     return G
-

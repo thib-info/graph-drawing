@@ -6,7 +6,7 @@ import shutil
 from graph.Graph import Graph
 import algo.Grid
 from algo.force_direct import force_direct_figure
-from algo import dmp_algo
+from algo import dmp_algo, drawing3D
 
 
 def parse_args():
@@ -38,6 +38,7 @@ def parse_args():
     parser.add_argument('-a', '--algo', type=str, default='',
                         choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')
+    parser.add_argument('-dim', action='store_true', help='launches the 3D algorithm')
 
     return parser.parse_args()
 
@@ -187,12 +188,17 @@ def grid():
     if args.grid:
         algo.Grid.grid_figure(args.graph_type + '_graph.json')
 
+def threeD():
+    args = parse_args()
+    if args.dim:
+        algo.drawing3D.figure_3D(args.graph_type + '_graph.json')
 
 def main():
     generateGraph()
     evaluateGraph()
     grid()
     force_direct()
+    threeD()
     #presentation()
 
 if __name__ == '__main__':

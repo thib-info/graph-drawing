@@ -33,7 +33,7 @@ def parse_args():
                         help='Save screenshot of the given graph into the pdf you specified')
     parser.add_argument('-grid', action= 'store_true')
     parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
-    parser.add_argument('-fdt', '--force-direct type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
+    parser.add_argument('-fdt', '--force-direct_type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
     parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
     parser.add_argument('-a', '--algo', type=str, default='',
                         choices=["complete", "dmp"],
@@ -181,7 +181,12 @@ def presentation():
 def force_direct():
     args = parse_args()
     if args.force_direct:
-        force_direct_figure(args.graph_type + '_graph.json', args.iterations)
+        if None:
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type=args.force_direct_type)
+        else:
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='Eades')
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='FR')
+
 
 def grid():
     args = parse_args()

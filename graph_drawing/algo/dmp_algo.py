@@ -1,3 +1,5 @@
+import os
+
 import networkx
 import numpy
 from matplotlib import pyplot as plt
@@ -234,26 +236,35 @@ def admissible_face(subGraph, faces, fragments):
 
 
 def print_fragment(frag):
-    fig, axs = plt.subplots(1, 3)
+    nbr_frag = len(frag)
+    if nbr_frag == 1:
+        fig, axs = plt.subplots(1, 3)
+    elif nbr_frag == 2:
+        fig, axs = plt.subplots(1, 2)
+    elif nbr_frag == 3:
+        fig, axs = plt.subplots(1, 3)
+    else:
+        fig, axs = plt.subplots(1, 2)
 
-    # plot the first graph on the first subplot
-    nx.draw(frag[0], with_labels=True, ax=axs[0])
-    axs[0].set_title("First frag")
-
-    if len(frag) > 1:
-        # plot the second graph on the second subplot
-        nx.draw(frag[1], with_labels=True, ax=axs[1])
-        axs[1].set_title("Second frag")
-
-        if len(frag) > 2:
-            nx.draw(frag[2], with_labels=True, ax=axs[2])
-            axs[2].set_title("Third frag")
+    if nbr_frag >= 1:
+        nx.draw(frag[0], with_labels=True, ax=axs[0])
+        axs[0].set_title("Fragment n°" + str(0))
+        if nbr_frag >= 2:
+            nx.draw(frag[1], with_labels=True, ax=axs[1])
+            axs[1].set_title("Fragment n°" + str(1))
+            if nbr_frag >= 3:
+                nx.draw(frag[2], with_labels=True, ax=axs[2])
+                axs[2].set_title("Fragment n°" + str(2))
 
     # adjust the spacing between the subplots
     plt.subplots_adjust(wspace=1.5)
+    name_frag = "dmp-algo-planar-embedding-frag"
+    nbrElem = len(os.listdir("./graph_drawing/stocked-graph/" + name_frag))
+    fig.savefig("./graph_drawing/stocked-graph/" + name_frag + "/screenshot-" + str(nbrElem))
+    plt.close(fig)
 
     # show the plot
-    plt.show()
+    # plt.show()
 
 
 def get_alpha_path(subGraph, fragment):
@@ -269,7 +280,6 @@ def get_alpha_path(subGraph, fragment):
         if not is_in:
             dif.append(fn)
 
-    # return dif[0]
     return dif
 
 
@@ -311,8 +321,11 @@ def dmp_planar_embedding(graph):
     # Copy of the given graph to make all the modifications
     H = graph.copy()
 
-    name = "dmp-algo-planar-ambedding"
+    name = "dmp-algo-planar-embedding"
     sv.init_gif(name)
+
+    name_frag = "dmp-algo-planar-embedding-frag"
+    sv.init_gif(name_frag)
 
     # Step 1: Choose a cycle of G to get a planar graph G'
     subGraph = select_cycle_graph(H)
@@ -331,6 +344,7 @@ def dmp_planar_embedding(graph):
 
         # Step 3: Get the fragments of the current cycle
         fragment = get_fragment(graph, subGraph)
+
         if len(fragment) == 0:
             if nbr_turn == 0:
                 print("The given graph contains only one cycle")
@@ -385,4 +399,7 @@ def dmp_planar_embedding(graph):
 
     data = nx.node_link_data(subGraph)
     factory.save_graph(data, 'dmp_graph_algo.json')
+
+    sv.create_gif_from_images(name_frag)
+
     return subGraph

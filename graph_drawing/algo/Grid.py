@@ -41,9 +41,9 @@ def apply_pos(G):
 
 
 def canonical(G):
-    H = G.copy()
-
     k = G.number_of_nodes()
+
+    H = G.copy()
     pos = get_posH(G)
     #pos = nx.planar_layout(H)
 
@@ -164,18 +164,56 @@ def grid_layout(graph_path):
     #G1 = nx.Graph()
     #G1.add_nodes_from([(1),(2),(3),(4),(5),(6)])
     #G1.add_edges_from([(1,2),(1,4),(1,5),(2,3),(2,4),(2,5),(2,6),(3,4),(3,6),(4,5),(4,6)])
-    G2 = nx.Graph()
-    G2.add_nodes_from([(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11)])
-    G2.add_edges_from([(1,2),(1,11),(1,4),(2,4),(2,3),(2,5),(2,9),(2,11),(3,5),(3,4),(4,11),(4,5),(4,6),(4,7),(4,8),(5,6),(5,9),(5,10),(5,7),(5,11),(6,7),(7,8),(7,10),(7,11),(8,11),(9,11),(10,11)])
-    G2 = apply_pos(G2)
+    #G2 = nx.Graph()
+    #G2.add_nodes_from([(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11)])
+    #G2.add_edges_from([(1,2),(1,11),(1,4),(2,4),(2,3),(2,5),(2,9),(2,11),(3,5),(3,4),(4,11),(4,5),(4,6),(4,7),(4,8),(5,6),(5,9),(5,10),(5,7),(5,11),(6,7),(7,8),(7,10),(7,11),(8,11),(9,11),(10,11)])
+    #fig, ax = plt.subplots()
+    #nx.draw(G2, with_labels=True, font_weight='bold') 
+    #ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
+    #plt.axis('on')
+    #plt.grid('on')                 
+    #plt.show()
+    #G2 = apply_pos(G2)
     #f.addPosition(G1)
     #data = nx.readwrite.json_graph.node_link_data(G1)
     #f.save_graph(data, 'G1.json')
     #G1 = graph.Graph.Graph('G1.json')
 
+
     G = graph.Graph.Graph(graph_path)
-    G = dmp_planar_embedding(G)
+    G = G.graph.copy()
+    for u in G.nodes():
+        G.nodes[u]['pos'] = nx.planar_layout(G)[u]
+
+
+    fig, ax = plt.subplots()
+    nx.draw(G, pos = get_posH(G), with_labels=True, font_weight='bold') 
+    ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
+    plt.axis('on')
+    plt.grid('on')                 
+    plt.show()
+
+    
+    #G = dmp_planar_embedding(G)
     #G = G2
+
+
+    k = G.number_of_nodes()
+    addededges = []
+    if G.number_of_edges() < 3*k-6:
+        for u in G.nodes():
+            for v in G.nodes():
+                if u != v and G.has_edge(u,v) == False:
+                    addededges.append([u,v])
+                    G.add_edge(u,v)
+                    if G.number_of_edges() == 3*k-6: 
+                        break
+            else:
+                continue
+            break
+
+
+        
     H = G.copy()
     order = canonical(H)
     v1 = order[0]
@@ -257,6 +295,18 @@ def grid_layout(graph_path):
         plt.axis('on')
         plt.grid('on')                 
         plt.show()
+
+    for i in addededges:
+        H.remove_edge(i[0],i[1])
+
+    fig, ax = plt.subplots()
+    nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold') 
+    ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
+    plt.axis('on')
+    plt.grid('on')                 
+    plt.show()
+
+
     print(c.calculate_minimum_area(H))
     print((2*k-4)*(k-2))
     return H

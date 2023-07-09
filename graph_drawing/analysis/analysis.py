@@ -73,6 +73,6 @@ def full_comparison(graph_path):
     print(crossing_dict)
     print(edge_length_dict)
     print(min_area_dict)
-    print(symmetry_dict)
+    #print(symmetry_dict)
     print(compactness_dict)
-    print(clustering_dict)
+    #print(clustering_dict)

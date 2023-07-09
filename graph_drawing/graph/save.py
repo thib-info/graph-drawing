@@ -59,5 +59,4 @@ def create_gif_from_images(name):
     frames = [Image.open(image) for image in sorted(glob.glob(f"{folder_path}/*.png"), key=sort_by_number)]
     frame_one = frames[0]
     frame_one.save(folder_path + '/' + name + '.gif', format="GIF", append_images=frames,
-                   save_all=True, duration=100 * len(frames), loop=0)
-#                   save_all=True, duration=10 * len(frames), loop=0)
+                   save_all=True, duration=10 * len(frames), loop=0)

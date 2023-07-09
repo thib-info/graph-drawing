@@ -70,7 +70,7 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
     p1, p2, p3 = 1, 10, 50 
 
     # configure subplots
-    width = 4
+    width = 5
     length = 1
 
     # make sure width = length for each subplot
@@ -84,6 +84,9 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
     
     # get the position of G
     pos = get_pos(G)
+
+    # initialize the gif
+    sv.init_gif('Force_direct')
 
     # iterate
     for i in range(M):
@@ -192,13 +195,15 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
             nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
             subax4.set_title('i = ' + str(p3))
         #TODO: gif implementation
+
+        if i%5 == 0:
+            sv.save_screenshot(G.graph, 'Force_Direct')
     
     subax5 = plt.subplot(155)
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
     subax5.set_title('i = ' + str(M))
     plt.show()
 
-    '''
     # normalize the node positions        
     xmax = -inf
     ymax = -inf
@@ -215,10 +220,10 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
         if pos[u][1] < xmin: 
             ymin = pos[u][1]
 
-    plt.figure(figsize=(5,5*(ymax-ymin)/(xmax-xmin)))
+    #plt.figure(figsize=(5,5*(ymax-ymin)/(xmax-xmin)))
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
     plt.show()
-    '''
+
 
     print(type, ' edge length: ', G.edge_length)
     print(type, ' compactness: ', G.compactness)
@@ -226,6 +231,6 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
     print(type, ' clustering: ', G.clustering)
     print(type, ' minimum area: ', G.minimum_area)
 
-
+    sv.create_gif_from_images('Force_Direct')
     return G
 

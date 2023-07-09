@@ -38,6 +38,7 @@ def parse_args():
     parser.add_argument('-a', '--algo', type=str, default='',
                         choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')
+    parser.add_argument('-dim', action='store_true', help='launches the 3D algorithm')
 
     return parser.parse_args()
 
@@ -193,6 +194,10 @@ def grid():
         algo.Grid.grid_canonical(args.graph_type + '_graph.json')
         algo.Grid.grid_layout(args.graph_type + '_graph.json')
 
+def threeD():
+    args = parse_args()
+    if args.dim:
+        algo.drawing3D.figure_3D(args.graph_type + '_graph.json')
 
 def run_analysis():
     args = parse_args()

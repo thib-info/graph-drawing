@@ -126,6 +126,8 @@ The implemented algorithms are:
 - The complete graph drawing algorithm in *complete_algo.py*
 - The circular layout drawing algorithm in *circular_layout.py*
 - Grid drawing: shift method in *Grid.py*
+- Force-directed drawing: *Force_direct.py*
+- 3D drawing: *drawing3D.py*
 
 To save and analyze iteration of an algorithm we can use the option *--report*
 to save all of their plots inside a pdf.

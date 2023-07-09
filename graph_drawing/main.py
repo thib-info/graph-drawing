@@ -4,9 +4,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import shutil
 from graph.Graph import Graph
+import algo.Grid
 from algo.force_direct import force_direct_figure
-from algo import dmp_algo
-
+from algo import dmp_algo, drawing3D
+from analysis import analysis
 
 def parse_args():
     """
@@ -30,12 +31,14 @@ def parse_args():
                         help='Define if you want your graph to be directive or not')
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
+    parser.add_argument('-grid', action= 'store_true')
     parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
-    parser.add_argument('-fdt', '--force-direct type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
+    parser.add_argument('-fdt', '--force-direct_type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
     parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
     parser.add_argument('-a', '--algo', type=str, default='',
                         choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')
+    parser.add_argument('-dim', action='store_true', help='launches the 3D algorithm')
 
     return parser.parse_args()
 
@@ -178,15 +181,30 @@ def presentation():
 def force_direct():
     args = parse_args()
     if args.force_direct:
-        force_direct_figure(args.graph_type + '_graph.json', args.iterations)
+        if args.force_direct_type is not None:
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type=args.force_direct_type)
+        else:
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='Eades')
+            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='FR')
 
+
+def grid():
+    args = parse_args()
+    if args.grid:
+        algo.Grid.grid_canonical(args.graph_type + '_graph.json')
+        algo.Grid.grid_layout(args.graph_type + '_graph.json')
+
+def threeD():
+    args = parse_args()
+    if args.dim:
+        algo.drawing3D.figure_3D(args.graph_type + '_graph.json')
+
+def run_analysis():
+    args = parse_args()
+    analysis.full_comparison(graph_path=args.graph_type + '_graph.json')
 
 def main():
-    generateGraph()
-    evaluateGraph()
-    force_direct()
-    #presentation()
-
+    run_analysis()
 
 if __name__ == '__main__':
-    main()
+    main()    

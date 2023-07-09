@@ -7,7 +7,6 @@ from graph.Graph import Graph
 import algo.Grid
 from algo.force_direct import force_direct_figure
 from algo import dmp_algo, drawing3D
-from analysis import analysis
 
 def parse_args():
     """

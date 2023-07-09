@@ -36,6 +36,7 @@ def full_comparison(graph_path):
     #symmetry_dict['fd: Eades'] = c.is_symmetric(G_Eades)
 
 
+
     # test FR
     t0_FR = time.time() 
     G_FR = force_direct_figure(graph_path=graph_path, type='FR').graph
@@ -73,3 +74,4 @@ def full_comparison(graph_path):
     print('edge length', edge_length_dict)
     print('minimum area', min_area_dict)
     #print(symmetry_dict)
+

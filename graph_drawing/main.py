@@ -6,8 +6,8 @@ import shutil
 from graph.Graph import Graph
 import algo.Grid
 from algo.force_direct import force_direct_figure
-from algo import dmp_algo, drawing3D
-
+from algo import dmp_algo
+from analysis import analysis
 
 def parse_args():
     """
@@ -181,7 +181,7 @@ def presentation():
 def force_direct():
     args = parse_args()
     if args.force_direct:
-        if None:
+        if args.force_direct_type is not None:
             force_direct_figure(args.graph_type + '_graph.json', args.iterations, type=args.force_direct_type)
         else:
             force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='Eades')
@@ -199,13 +199,12 @@ def threeD():
     if args.dim:
         algo.drawing3D.figure_3D(args.graph_type + '_graph.json')
 
+def run_analysis():
+    args = parse_args()
+    analysis.full_comparison(graph_path=args.graph_type + '_graph.json')
+
 def main():
-    generateGraph()
-    evaluateGraph()
-    grid()
-    force_direct()
-    threeD()
-    #presentation()
+    run_analysis()
 
 if __name__ == '__main__':
     main()    

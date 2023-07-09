@@ -39,7 +39,7 @@ class Graph:
             self.is_connected = nx.is_connected(self.graph)
 
         # Apply the given algo to the graph
-        if algo is not '':
+        if algo != '':
             if algo == 'complete':
                 self.algo = complete.complete_graph(self.graph)
             if algo == 'dmp':

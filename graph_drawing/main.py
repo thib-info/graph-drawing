@@ -39,6 +39,7 @@ def parse_args():
                         choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')
     parser.add_argument('-dim', action='store_true', help='launches the 3D algorithm')
+    parser.add_argument('-an', action='store_true', help='launches analaysis')
 
     return parser.parse_args()
 
@@ -182,10 +183,10 @@ def force_direct():
     args = parse_args()
     if args.force_direct:
         if args.force_direct_type is not None:
-            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type=args.force_direct_type)
+            force_direct_figure(args.graph_type + '_graph.json', type=args.force_direct_type)
         else:
-            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='Eades')
-            force_direct_figure(args.graph_type + '_graph.json', args.iterations, type='FR')
+            force_direct_figure(args.graph_type + '_graph.json', type='Eades')
+            force_direct_figure(args.graph_type + '_graph.json', type='FR')
 
 
 def grid():
@@ -201,9 +202,14 @@ def threeD():
 
 def run_analysis():
     args = parse_args()
-    analysis.full_comparison(graph_path=args.graph_type + '_graph.json')
+    if args.an:
+        analysis.full_comparison(graph_path=args.graph_type + '_graph.json')
 
 def main():
+    generateGraph()
+    grid()
+    force_direct()
+    threeD()
     run_analysis()
 
 if __name__ == '__main__':

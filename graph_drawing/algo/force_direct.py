@@ -51,16 +51,16 @@ def fr_FR(k, total_distance):
     return total_force
 
 
-def force_direct_figure(graph_path, M=1000, type="Eades"):
+def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
     '''
-    Run the force direct algorithm on graph G for M iterations.
+    Run the force direct algorithm on graph G untill the total force calculated is smaller than epsilon.
     The type is either 'Eades' (type=0) or 'Fruchterman and Reingold' (type=1) 
     '''
 
     G = Graph(graph_path)
 
     #configure fd-Eades variables
-    c1, c2, c3, c4, M = 2,1,1,0.1,M
+    c1, c2, c3, c4 = 2,1,1,0.1
 
     #configure fd-FR variable
     area, C = 1, 0.5
@@ -68,6 +68,10 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
 
     #choose plotting instances
     p1, p2, p3 = 1, 10, 50 
+
+    #initialise gif
+    name = 'fd_gif'
+    sv.init_gif(name)
 
     # configure subplots
     width = 5
@@ -89,7 +93,13 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
     sv.init_gif('Force_direct')
 
     # iterate
-    for i in range(M):
+#    for i in range(M):
+
+    i = -1
+    max_total_force = epsilon+1
+    while max_total_force > epsilon:
+
+        i = i+1
 
         forcex = np.zeros(G.num_vertices)
         forcey = np.zeros(G.num_vertices)
@@ -150,8 +160,15 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
 
                     forcey[u] -= total_force*y_distance/total_distance
                     forcey[v] += total_force*y_distance/total_distance
-        
+    
+        max_total_force = 0
+
         for u in G.graph.nodes():
+            
+            total_force = sqrt(forcex[u]**2 + forcey[u]**2)
+            if total_force > max_total_force:
+                max_total_force = total_force
+
             if type == "Eades":        
                 pos[u][0] += forcex[u]*c4 
                 pos[u][1] += forcey[u]*c4
@@ -178,7 +195,9 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
                 pos[u][0] = min(1, max(0, pos[u][0]))
                 pos[u][1] = min(1, max(0, pos[u][1]))
                 
-        
+        # save gif screenshot
+        sv.save_screenshot(G.graph, name)
+
         # draw graph at different stages
         if i == p1:
             subax2 = plt.subplot(152)
@@ -194,43 +213,18 @@ def force_direct_figure(graph_path, M=1000, type="Eades"):
             subax4 = plt.subplot(154)
             nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
             subax4.set_title('i = ' + str(p3))
-        #TODO: gif implementation
-
         if i%5 == 0:
             sv.save_screenshot(G.graph, 'Force_Direct')
-    
+
     subax5 = plt.subplot(155)
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-    subax5.set_title('i = ' + str(M))
+    subax5.set_title('i = ' + str(i))
     plt.show()
 
-    # normalize the node positions        
-    xmax = -inf
-    ymax = -inf
-    xmin = inf
-    ymin = inf
+    sv.create_gif_from_images(name)
 
-    for u in G.graph.nodes():
-        if pos[u][0] > xmax: 
-            xmax = pos[u][0]
-        if pos[u][1] > ymax: 
-            ymax = pos[u][1] 
-        if pos[u][0] < xmin: 
-            xmin = pos[u][0]
-        if pos[u][1] < xmin: 
-            ymin = pos[u][1]
-
-    #plt.figure(figsize=(5,5*(ymax-ymin)/(xmax-xmin)))
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-    plt.show()
+#    plt.show()
 
-
-    print(type, ' edge length: ', G.edge_length)
-    print(type, ' compactness: ', G.compactness)
-    print(type, ' crossing number: ', G.crossing_number)
-    print(type, ' clustering: ', G.clustering)
-    print(type, ' minimum area: ', G.minimum_area)
-
-    sv.create_gif_from_images('Force_Direct')
     return G
 

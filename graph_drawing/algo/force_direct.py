@@ -74,7 +74,7 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
     sv.init_gif(name)
 
     # configure subplots
-    width = 4
+    width = 5
     length = 1
 
     # make sure width = length for each subplot
@@ -88,6 +88,9 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
     
     # get the position of G
     pos = get_pos(G)
+
+    # initialize the gif
+    sv.init_gif('Force_direct')
 
     # iterate
 #    for i in range(M):
@@ -210,20 +213,18 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
             subax4 = plt.subplot(154)
             nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
             subax4.set_title('i = ' + str(p3))
-        #TODO: gif implementation
-        #print(i)
+        if i%5 == 0:
+            sv.save_screenshot(G.graph, 'Force_Direct')
 
     subax5 = plt.subplot(155)
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
     subax5.set_title('i = ' + str(i))
     plt.show()
 
-    '''
     sv.create_gif_from_images(name)
 
     nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-    plt.show()
-    '''
+#    plt.show()
 
     return G
 

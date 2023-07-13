@@ -7,7 +7,6 @@ from graph.Graph import Graph
 import algo.Grid
 from algo.force_direct import force_direct_figure
 from algo import dmp_algo, drawing3D
-from analysis import analysis
 
 def parse_args():
     """
@@ -34,7 +33,7 @@ def parse_args():
     parser.add_argument('-grid', action= 'store_true')
     parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
     parser.add_argument('-fdt', '--force-direct_type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
-    parser.add_argument('-it', '--iterations', type=int, default=1000, help='Define the amount of iterations used by the (force direct) algorithm')
+    parser.add_argument('-it', '--iterations', type=int, default=100, help='Define the amount of iterations used by the (force direct) algorithm')
     parser.add_argument('-a', '--algo', type=str, default='',
                         choices=["complete", "dmp"],
                         help='Select the algo you want to apply to your graph')

@@ -46,12 +46,12 @@ def fr_FR(k, total_distance):
     Calculate the total repulsive force according to the Fruchterman and Reingold algorithm
     '''
     if total_distance == 0:
-        return 0
+        return 100
     total_force = k**2/total_distance
     return total_force
 
 
-def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
+def force_direct_figure(graph_path, type="Eades", epsilon = 0.01, make_fig = True):
     '''
     Run the force direct algorithm on graph G untill the total force calculated is smaller than epsilon.
     The type is either 'Eades' (type=0) or 'Fruchterman and Reingold' (type=1) 
@@ -64,33 +64,34 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
 
     #configure fd-FR variable
     area, C = 1, 0.5
-    k, t0 = 1/sqrt(G.num_vertices), 0.1
+    k, t0 = 1/sqrt(G.num_vertices), 0.15
 
     #choose plotting instances
     p1, p2, p3 = 1, 10, 50 
 
     #initialise gif
-    name = 'fd_gif'
-    sv.init_gif(name)
+    if make_fig:
+        name = 'fd_gif'
+        sv.init_gif(name)
 
-    # configure subplots
-    width = 5
-    length = 1
+        # configure subplots
+        width = 5
+        length = 1
 
-    # make sure width = length for each subplot
-    width_size = 10
-    plt.figure(figsize=(width_size,width_size/width*length))
+        # make sure width = length for each subplot
+        width_size = 10
+        plt.figure(figsize=(width_size,width_size/width*length))
 
-    # draw the first subplot
-    subax1 = plt.subplot(151)
-    nx.draw(G.graph, pos = get_pos(G), with_labels=True, font_weight='bold')
-    subax1.set_title('initial graph')
+        # draw the first subplot
+        subax1 = plt.subplot(151)
+        nx.draw(G.graph, pos = get_pos(G), with_labels=True, font_weight='bold')
+        subax1.set_title('initial graph')
     
+        # initialize the gif
+        sv.init_gif('Force_direct')
+
     # get the position of G
     pos = get_pos(G)
-
-    # initialize the gif
-    sv.init_gif('Force_direct')
 
     # iterate
 #    for i in range(M):
@@ -99,15 +100,13 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
     max_total_force = epsilon+1
     while max_total_force > epsilon:
 
-        i = i+1
-
+        i += 1
         forcex = np.zeros(G.num_vertices)
         forcey = np.zeros(G.num_vertices)
 
         if type == "FR":  
             # cool temperature t
             t = t0/(i+1)
-
 
         # calculate attractive forces
         for u, v in G.graph.edges():
@@ -163,23 +162,27 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
     
         max_total_force = 0
 
-        for u in G.graph.nodes():
-            
-            total_force = sqrt(forcex[u]**2 + forcey[u]**2)
-            if total_force > max_total_force:
-                max_total_force = total_force
+        '''
+        if i > 0:
+            force_change = sum(np.sqrt((forcex - forcex_prev)**2 + (forcey -forcey_prev)**2))
+        '''
 
+        for u in G.graph.nodes():
+
+            total_force = sqrt(forcex[u]**2 + forcey[u]**2)
+            
+            '''    
+            if type == 'FR' and max_total_force > t:
+                max_total_force = t
+            '''
             if type == "Eades":        
-                pos[u][0] += forcex[u]*c4 
-                pos[u][1] += forcey[u]*c4
-            '''
-            else:
-        
-                pos[u][0] += forcex[u]*c4 
-                pos[u][1] += forcey[u]*c4
-            '''
+
+                pos[u][0] += c4*forcex[u]
+                pos[u][1] += c4*forcey[u]
+                if total_force > max_total_force:
+                    max_total_force = total_force
+
             if type == "FR":
-                total_force = sqrt(forcex[u]**2 + forcey[u]**2)
 
                 # limit max movement to temperature t
                 if forcex[u] > 0:
@@ -194,37 +197,44 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01):
                 # limit movement to remain in the frame
                 pos[u][0] = min(1, max(0, pos[u][0]))
                 pos[u][1] = min(1, max(0, pos[u][1]))
-                
-        # save gif screenshot
-        sv.save_screenshot(G.graph, name)
 
-        # draw graph at different stages
-        if i == p1:
-            subax2 = plt.subplot(152)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-            subax2.set_title('i = '+ str(p1))
+                if min(t, total_force) > max_total_force:
+                    max_total_force = min(t, total_force)
 
-        elif i == p2:
-            subax3 = plt.subplot(153)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-            subax3.set_title('i = ' + str(p2))
+        if make_fig:
 
-        elif i == p3:
-            subax4 = plt.subplot(154)
-            nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-            subax4.set_title('i = ' + str(p3))
-        if i%5 == 0:
-            sv.save_screenshot(G.graph, 'Force_Direct')
+            # save gif screenshot
+            sv.save_screenshot(G.graph, name)
 
-    subax5 = plt.subplot(155)
-    nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-    subax5.set_title('i = ' + str(i))
-    plt.show()
+            # draw graph at different stages
+            if i == p1:
+                subax2 = plt.subplot(152)
+                nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+                subax2.set_title('i = '+ str(p1))
 
-    sv.create_gif_from_images(name)
+            elif i == p2:
+                subax3 = plt.subplot(153)
+                nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+                subax3.set_title('i = ' + str(p2))
 
-    nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
-#    plt.show()
+            elif i == p3:
+                subax4 = plt.subplot(154)
+                nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+                subax4.set_title('i = ' + str(p3))
+            if i%5 == 0:
+                sv.save_screenshot(G.graph, 'Force_Direct')
+
+    if make_fig:
+
+        subax5 = plt.subplot(155)
+        nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+        subax5.set_title('i = ' + str(i))
+        plt.show()
+
+        sv.create_gif_from_images(name)
+
+        nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
+        plt.show()
 
     return G
 

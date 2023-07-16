@@ -39,6 +39,34 @@ def calculate_edge_length(graph):
             (graph.nodes[u]['pos'][0] - graph.nodes[v]['pos'][0]) ** 2 + (graph.nodes[u]['pos'][1] - graph.nodes[v]['pos'][1]) ** 2)
     return total_length
 
+def calculate_norm_avg_el():
+    """
+    Calculate the average edge length (normalized)
+    """
+
+    
+def calculate_edge_length_metrics(graph):
+    """
+    Calculates the normalized avg edge lenght and normalized variance.
+    """
+
+    total_length, var = 0,0
+    min_edge_length = math.inf
+    num_of_edges = 0
+
+    for u, v in graph.edges:
+        edge_weight = graph.edges[u, v].get("weight", 1.0)  # default weight is 1.0
+        edge_length = edge_weight * math.sqrt(
+            (graph.nodes[u]['pos'][0] - graph.nodes[v]['pos'][0]) ** 2 + (graph.nodes[u]['pos'][1] - graph.nodes[v]['pos'][1]) ** 2)
+        if edge_length < min_edge_length:
+            min_edge_length = edge_length
+        num_of_edges += 1
+        
+        total_length += edge_length
+        var += edge_length**2
+
+    return total_length/num_of_edges/min_edge_length, var/num_of_edges/(min_edge_length**2)
+    
 
 def calculate_minimum_area(graph):
     min_x = math.inf
@@ -131,3 +159,4 @@ def calculate_clustering(graph):
         clustering = sum(clustering_dict.values()) / len(G.nodes)
         return clustering
 
+    

@@ -10,7 +10,7 @@ import graph.charateristics
 from algo.force_direct import force_direct_figure
 from algo.Grid import grid_layout
 from algo.dmp_algo import dmp_planar_embedding
-
+from main import plot_graph
 
 def full_comparison(graph_path):
     
@@ -19,6 +19,8 @@ def full_comparison(graph_path):
     crossing_dict = {}
     edge_length_dict = {}
     min_area_dict = {}
+    avg_el_dict = {}
+    var_el_dict = {}
     symmetry_dict = {}
     compactness_dict = {}
     clustering_dict = {}
@@ -27,24 +29,25 @@ def full_comparison(graph_path):
     
     # test Eades
     t0_Eades = time.time() 
-    G_Eades = force_direct_figure(graph_path=graph_path, type='Eades').graph
+    G_Eades = force_direct_figure(graph_path=graph_path, type='Eades', make_fig=True).graph
     
     runtime_dict['fd: Eades'] = time.time() - t0_Eades
     crossing_dict['fd: Eades'] = c.calculate_crossing_number(G_Eades)
     edge_length_dict['fd: Eades'] = c.calculate_edge_length(G_Eades)
     min_area_dict['fd: Eades'] = c.calculate_minimum_area(G_Eades)
+    avg_el_dict['fd: Eades'], var_el_dict['fd: Eades'] = c.calculate_edge_length_metrics(G_Eades)
     #symmetry_dict['fd: Eades'] = c.is_symmetric(G_Eades)
-
 
 
     # test FR
     t0_FR = time.time() 
-    G_FR = force_direct_figure(graph_path=graph_path, type='FR').graph
+    G_FR = force_direct_figure(graph_path=graph_path, type='FR', make_fig=True).graph
    
     runtime_dict['fd: FR'] = time.time() - t0_FR
     crossing_dict['fd: FR'] = c.calculate_crossing_number(G_FR)
     edge_length_dict['fd: FR'] = c.calculate_edge_length(G_FR)
     min_area_dict['fd: FR'] = c.calculate_minimum_area(G_FR)
+    avg_el_dict['fd: FR'], var_el_dict['fd: FR'] = c.calculate_edge_length_metrics(G_FR)
     #symmetry_dict['fd: FR'] = c.is_symmetric(G_FR)
 
 
@@ -57,21 +60,24 @@ def full_comparison(graph_path):
     crossing_dict['DMP'] = c.calculate_crossing_number(G_DMP)
     edge_length_dict['DMP'] = c.calculate_edge_length(G_DMP)
     min_area_dict['DMP'] = c.calculate_minimum_area(G_DMP)
+    avg_el_dict['DMP'], var_el_dict['DMP'] = c.calculate_edge_length_metrics(G_DMP)
     #symmetry_dict['DMP'] = c.is_symmetric(G_DMP)
 
 
-    G_Grid = grid_layout(G)
+    G_Grid = grid_layout(graph_path)
     t0_Grid = time.time()
     grid_layout(graph_path=graph_path)
     runtime_dict['Grid'] = time.time() - t0_Grid
     crossing_dict['Grid'] = c.calculate_crossing_number(G_Grid)
     edge_length_dict['Grid'] = c.calculate_edge_length(G_Grid)
     min_area_dict['Grid'] = c.calculate_minimum_area(G_Grid)
+    avg_el_dict['Grid'], var_el_dict['Grid'] = c.calculate_edge_length_metrics(G_Grid)
 
 
     print('runtime', runtime_dict)
     print('crossing', crossing_dict)
     print('edge length', edge_length_dict)
     print('minimum area', min_area_dict)
+    print('normalized avg edge length', avg_el_dict)
+    print('normalized var edge length', var_el_dict)
     #print(symmetry_dict)
-

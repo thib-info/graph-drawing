@@ -6,6 +6,7 @@ import shutil
 from graph.Graph import Graph
 from graph import charateristics as c
 import algo.Grid
+import algo.Tree
 from algo.force_direct import force_direct_figure
 from algo import dmp_algo, drawing3D
 from analysis import analysis
@@ -33,6 +34,7 @@ def parse_args():
     parser.add_argument('-r', '--report', type=str, default='',
                         help='Save screenshot of the given graph into the pdf you specified')
     parser.add_argument('-grid', action= 'store_true')
+    parser.add_argument('-treeTR', action= 'store_true')
     parser.add_argument('-fd', '--force-direct', action='store_true', help='activates the force direct algorithm for the chosen graph type')
     parser.add_argument('-fdt', '--force-direct_type', type=str, default='Eades', choices=["Eades", "FR"], help='Define the specific type of force direct algorithm')
     parser.add_argument('-noplt', action='store_false', help='parameter to tell the algorithm not to plot the outcome')
@@ -192,6 +194,11 @@ def grid():
         algo.Grid.grid_canonical(args.graph_type + '_graph.json')
         algo.Grid.grid_layout(args.graph_type + '_graph.json')
 
+def treeTR():
+    args = parse_args()
+    if args.treeTR:
+        algo.Tree.TreeTR(args.graph_type + '_graph.json')
+
 def threeD():
     args = parse_args()
     if args.dim:
@@ -208,6 +215,7 @@ def main():
     force_direct()
     threeD()
     run_analysis()
+    treeRT()
 
 if __name__ == '__main__':
     main()    

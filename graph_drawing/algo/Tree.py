@@ -185,28 +185,19 @@ def TreeTR(graph_path, root = 0):
     xcoords = [0]
     while nodes < k-1:
         neighbours = [u for u in G.neighbors(postorder[nodes])]
-        print('order' + str(postorder[nodes]))
         for u in neighbours:
-            print('neighbours'+str(u))
             index = postorder.index(u)
-            print(ycoords[index])
-            print(ycoords[nodes])
-            print(ycoords)
             if ycoords[index] > ycoords[nodes]:
-                print('neighbours'+str(u))
                 neighbour = u
                 index_neighbour = postorder.index(u)
         count = 0
         for u in G.neighbors(neighbour):
             index = postorder.index(u)
-            print(u)
             if ycoords[index] < ycoords[index_neighbour]:
                 count += 1
-        print('count='+str(count))
         if count == 1:
             nodes += 1
             xcoords.append(xcoords[nodes-1])
-            print('go up')
         else:
             under = 0
             done = 0
@@ -214,26 +205,20 @@ def TreeTR(graph_path, root = 0):
                 if done == 0:
                     index = postorder.index(u)
                     if ycoords[index] < ycoords[index_neighbour]:
-                        print('yes')
                         under += 1
-                        print(under)
-                        print(len([n for n in G.neighbors(neighbour)]))
                         if len(xcoords) < index + 1:
                             if len([n for n in G.neighbors(u)]) == 1:
                                 nodes += 1
                                 xcoords.append(xcoords[nodes-1]+2)
                                 under -= 1
                                 done += 1
-                                print('leaf')
                             else:
                                 nodes += 1
                                 xcoords.append(max(xcoords)+2)
                                 under -= 1
                                 done += 1
-                                print('new tree')
             if (under == len([n for n in G.neighbors(neighbour)])-1 and neighbour != root) or (neighbour == root and under == len([n for n in G.neighbors(neighbour)]) ):
                 nodes += 1
-                print('nodes'+str(nodes))
                 left = math.inf
                 right = -math.inf
                 for u in G.neighbors(neighbour):
@@ -244,11 +229,9 @@ def TreeTR(graph_path, root = 0):
                         if xcoords[index] <left:
                             left = xcoords[index]
                 xcoords.append((left+right)/2)
-                print('combine')
+                
     
     G = apply_pos(G)
-    print(str(xcoords)+'xcoords')
-    print(str(postorder)+'postorder')
     for i in range(len(xcoords)):
         G.nodes[postorder[i]]['pos'][0] = xcoords[i]
         G.nodes[postorder[i]]['pos'][1] = ycoords[i]

@@ -215,7 +215,7 @@ def main():
     force_direct()
     threeD()
     run_analysis()
-    treeRT()
+    treeTR()
 
 if __name__ == '__main__':
     main()    

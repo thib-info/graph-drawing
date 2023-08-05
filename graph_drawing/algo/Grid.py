@@ -200,12 +200,15 @@ def grid_layout(graph_path):
 
     k = G.number_of_nodes()
     addededges = []
-    if G.number_of_edges() < 3*k-6:
+    while G.number_of_edges() < 3*k-6:
         for u in G.nodes():
             for v in G.nodes():
                 if u != v and G.has_edge(u,v) == False:
                     addededges.append([u,v])
                     G.add_edge(u,v)
+                    if nx.is_planar(G) == False:
+                        G.remove_edge(u,v)
+                        addededges.remove([u,v])
                     if G.number_of_edges() == 3*k-6: 
                         break
             else:
@@ -213,7 +216,8 @@ def grid_layout(graph_path):
             break
 
 
-        
+
+
     H = G.copy()
     order = canonical(H)
     v1 = order[0]

@@ -255,7 +255,7 @@ def print_fragment(frag):
     plt.subplots_adjust(wspace=1.5)
 
     # show the plot
-    plt.show()
+    #plt.show()
 
 
 def get_alpha_path(subGraph, fragment):
@@ -306,7 +306,7 @@ def plot_subgraph(graph):
     # plot the first graph on the first subplot
     # nx.draw(graph, with_labels=True)
 
-    plt.show()
+    #plt.show()
 
 
 def dmp_planar_embedding(graph):

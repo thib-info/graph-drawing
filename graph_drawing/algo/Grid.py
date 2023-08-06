@@ -97,14 +97,14 @@ def canonical(G):
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     plt.axis('on')
     plt.grid('on')                 
-    plt.show()
+    #plt.show()
     H.remove_node(w)
     fig, ax = plt.subplots()
     nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold')
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     plt.axis('on')
     plt.grid('on')                  
-    plt.show()
+    #plt.show()
     
 
 
@@ -124,7 +124,7 @@ def canonical(G):
                     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True) 
                     plt.axis('on')
                     plt.grid('on')                 
-                    plt.show()
+                    #plt.show()
 
                     break
     
@@ -181,7 +181,8 @@ def grid_layout(graph_path):
 
 
     G = graph.Graph.Graph(graph_path)
-    G = G.graph.copy()
+#    G = G.graph.copy()
+    G = G.graph
     for u in G.nodes():
         G.nodes[u]['pos'] = nx.planar_layout(G)[u]
 
@@ -191,7 +192,7 @@ def grid_layout(graph_path):
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     plt.axis('on')
     plt.grid('on')                 
-    plt.show()
+    #plt.show()
 
     
     #G = dmp_planar_embedding(G)
@@ -206,7 +207,7 @@ def grid_layout(graph_path):
                 if u != v and G.has_edge(u,v) == False:
                     addededges.append([u,v])
                     G.add_edge(u,v)
-                    if nx.is_planar(G) == False:
+                    if nx.check_planarity == False:
                         G.remove_edge(u,v)
                         addededges.remove([u,v])
                     if G.number_of_edges() == 3*k-6: 
@@ -215,8 +216,9 @@ def grid_layout(graph_path):
                 continue
             break
 
-
-
+    for u in G.nodes():
+        G.nodes[u]['pos'] = nx.planar_layout(G)[u]
+        
 
     H = G.copy()
     order = canonical(H)
@@ -240,7 +242,7 @@ def grid_layout(graph_path):
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     plt.axis('on')
     plt.grid('on')                 
-    plt.show()
+    #plt.show()
 
     for i in range(3, k):
         L = []
@@ -298,13 +300,13 @@ def grid_layout(graph_path):
         ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
         plt.axis('on')
         plt.grid('on')                 
-        plt.show()
+        #plt.show()
 
     for i in addededges:
         H.remove_edge(i[0],i[1])
 
     fig, ax = plt.subplots()
-    nx.draw(H, pos = get_posH(H), with_labels=True, font_weight='bold') 
+    nx.draw(H, with_labels=True, font_weight='bold') 
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     plt.axis('on')
     plt.grid('on')                 
@@ -313,6 +315,11 @@ def grid_layout(graph_path):
 
     print(c.calculate_minimum_area(H))
     print((2*k-4)*(k-2))
+    #nx.draw(H, pos = get_posH(H), with_labels=True)
+    
+
+    #print(H.nodes())
+    plt.show()
     return H
 
 

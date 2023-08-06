@@ -15,13 +15,21 @@ def calculate_crossing_number(graph):
         if u1 == u2 or u1 == v2 or v1 == u2 or v1 == v2:
             # Ignore adjacent edges
             continue
-        if (u1, v1) == (u2, v2):
+        elif (u1, v1) == (u2, v2):
             # Ignore self-loops
             continue
-        # Check for edge crossings
-        if (u1 < u2 and v1 > v2 and (u1, v1) in graph[u2] and (u2, v2) in graph[v1]) \
-                or (u2 < u1 and v2 > v1 and (u2, v2) in graph[u1] and (u1, v1) in graph[v2]):
-            crossing_count += 1
+        else:
+            # Check for edge crossings
+            x1, y1, x2, y2 = graph.nodes[u1]['pos'][0], graph.nodes[u1]['pos'][1], graph.nodes[v1]['pos'][0], graph.nodes[v1]['pos'][1]
+            x1b, y1b, x2b, y2b = graph.nodes[u2]['pos'][0], graph.nodes[u2]['pos'][1], graph.nodes[v2]['pos'][0], graph.nodes[v2]['pos'][1]
+
+            rico1 = (y2 - y1)/max((x2- x1), 0.000001)
+            rico2 = (y2b - y1b)/max((x2b - x1b),0.000001)
+
+            xcross = (y1b - y1 - rico2*x1b + rico1*x1)/max(rico1 - rico2, 0.0000001)
+
+            if xcross < max(x1, x2) and xcross > min(x1, x2) and xcross < max(x1b, x2b) and xcross > min(x1b, x2b):
+                crossing_count += 1
 
     return crossing_count
 
@@ -39,10 +47,6 @@ def calculate_edge_length(graph):
             (graph.nodes[u]['pos'][0] - graph.nodes[v]['pos'][0]) ** 2 + (graph.nodes[u]['pos'][1] - graph.nodes[v]['pos'][1]) ** 2)
     return total_length
 
-def calculate_norm_avg_el():
-    """
-    Calculate the average edge length (normalized)
-    """
 
     
 def calculate_edge_length_metrics(graph):
@@ -65,8 +69,25 @@ def calculate_edge_length_metrics(graph):
         total_length += edge_length
         var += edge_length**2
 
-    return total_length/num_of_edges/min_edge_length, var/num_of_edges/(min_edge_length**2)
-    
+    ymax, ymin, xmax, xmin = 0, math.inf, 0, math.inf
+
+    for u in graph.nodes:
+        x = graph.nodes[u]['pos'][0]
+        y = graph.nodes[u]['pos'][1]
+        if x > xmax:
+            xmax = x
+        if x < xmin:
+            xmin = x
+        if y > ymax:
+            ymax = y
+        if y < ymin:
+            ymin = y
+
+    frame_size = (xmax-xmin)*(ymax-ymin)
+    frame_edge = math.sqrt(frame_size)
+
+    return total_length/num_of_edges/frame_edge, var/num_of_edges/(frame_edge**2)
+    #return total_length/num_of_edges/min_edge_length, var/num_of_edges/(min_edge_length**2)
 
 def calculate_minimum_area(graph):
     min_x = math.inf
@@ -88,7 +109,19 @@ def calculate_minimum_area(graph):
 
     width = max_x - min_x
     height = max_y - min_y
-    return width * height
+
+    #find min edge length
+        
+    min_el = math.inf
+    for u,v in graph.edges():
+
+        edge_length = math.sqrt((graph.nodes[u]['pos'][0] - graph.nodes[v]['pos'][0]) ** 2 + (graph.nodes[u]['pos'][1] - graph.nodes[v]['pos'][1]) ** 2)
+        if edge_length < min_el:
+            min_el = edge_length
+    
+    min_el = max(0.0000001, min_el)
+
+    return width * height/(min_el**2)
 
 
 def is_symmetric(graph):

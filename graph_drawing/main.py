@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument('-o', '--filename', type=str, default=None, help='filename for the graph data')
     parser.add_argument('-n', '--num-nodes', nargs='+', default=[10, 10], type=int, help='Number of nodes in the graph')
     parser.add_argument('-gt', '--graph-type', type=str, default="cycle",
-                        choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "atlas", "complete"],
+                        choices=["all", "cycle", "tree", "bipartite", "outerplanar", "grid", "atlas", "complete", "goldner_harary", "dodecahedral", "course", "binary_tree", "tertiary_tree"],
                         help="Type of graph to generate")
     parser.add_argument('-s', '--seed', type=int, default=None, help='Define the seed you want to apply')
     parser.add_argument('-c', '--complex', type=int, default=argparse.SUPPRESS,
@@ -112,6 +112,26 @@ def generateGraph():
         if args.graph_type == 'atlas' or args.graph_type == 'all':
             graph.generate_atlas_graph(args.num_nodes[0], args.weight)
             graph_to_print = 'atlas_graph.json'
+
+        if args.graph_type == 'goldner_harary' or args.graph_type == 'all':
+            graph.generate_goldner_harary_graph()
+            graph_to_print = 'goldner_harary_graph.json'
+
+        if args.graph_type == 'dodecahedral' or args.graph_type == 'all':
+            graph.generate_dodecahedral_graph()
+            graph_to_print = 'dodecahedral_graph.json'
+
+        if args.graph_type == 'course' or args.graph_type == 'all':
+            graph.generate_course_graph()
+            graph_to_print = 'course_graph.json'
+
+        if args.graph_type == 'binary_tree' or args.graph_type == 'all':
+            graph.generate_binary_tree()
+            graph_to_print = 'binary_tree.json'
+
+        if args.graph_type == 'tertiary_tree' or args.graph_type == 'all':
+            graph.generate_tertiary_tree()
+            graph_to_print = 'tertiary_tree.json'
 
     if hasattr(args, 'complex'):
         if args.complex is not None:
@@ -210,6 +230,10 @@ def run_analysis():
         analysis.full_comparison(graph_path=args.graph_type + '_graph.json')
 
 def main():
+
+    #analysis.comparison_growing_nodes()
+
+    
     generateGraph()
     grid()
     force_direct()

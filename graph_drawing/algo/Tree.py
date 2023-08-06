@@ -242,7 +242,7 @@ def TreeTR(graph_path, root = 0):
     plt.axis('on')
     plt.grid('on')                 
     plt.show()
-
+    return G
 
 
 

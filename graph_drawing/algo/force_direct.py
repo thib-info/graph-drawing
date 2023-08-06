@@ -64,7 +64,7 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01, make_fig = Tru
 
     #configure fd-FR variable
     area, C = 1, 0.5
-    k, t0 = 1/sqrt(G.num_vertices), 0.15
+    k, t0 = 1/sqrt(G.num_vertices), 1 #t0 = 0.15
 
     #choose plotting instances
     p1, p2, p3 = 1, 10, 50 
@@ -128,11 +128,11 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01, make_fig = Tru
                 #if i == M-1:
                 #    print('u', u, 'v', v, 'total_force att', total_force, 'total_dist', total_distance, x_distance, y_distance, 'posvx', pos[v][0], 'posvy', pos[v][1])
 
-                forcex[u] += total_force*x_distance/total_distance
-                forcex[v] += -total_force*x_distance/total_distance
+                forcex[u] += total_force*x_distance/max(total_distance, 0.0000000001)
+                forcex[v] += -total_force*x_distance/max(total_distance,0.0000000001)
 
-                forcey[u] += total_force*y_distance/total_distance
-                forcey[v] += -total_force*y_distance/total_distance
+                forcey[u] += total_force*y_distance/max(total_distance,0.0000000001)
+                forcey[v] += -total_force*y_distance/max(total_distance,0.0000000001)
 
         # calculate repulsive forces
         for u in G.graph.nodes():
@@ -154,11 +154,11 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01, make_fig = Tru
                     #if i == M-1:
                     #    print('u', u, 'v', v, 'total_force rep', total_force, 'total_dist', total_distance)
 
-                    forcex[u] -= total_force*x_distance/total_distance
-                    forcex[v] += total_force*x_distance/total_distance
+                    forcex[u] -= total_force*x_distance/max(total_distance,0.0000000001)
+                    forcex[v] += total_force*x_distance/max(total_distance,0.0000000001)
 
-                    forcey[u] -= total_force*y_distance/total_distance
-                    forcey[v] += total_force*y_distance/total_distance
+                    forcey[u] -= total_force*y_distance/max(total_distance,0.0000000001)
+                    forcey[v] += total_force*y_distance/max(total_distance,0.0000000001)
     
         max_total_force = 0
 
@@ -231,7 +231,7 @@ def force_direct_figure(graph_path, type="Eades", epsilon = 0.01, make_fig = Tru
         subax5.set_title('i = ' + str(i))
         plt.show()
 
-        sv.create_gif_from_images(name)
+        #sv.create_gif_from_images(name)
 
         nx.draw(G.graph, pos = pos, with_labels=True, font_weight='bold')
         plt.show()

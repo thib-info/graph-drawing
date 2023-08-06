@@ -17,6 +17,171 @@ def addWeight(graph):
         graph.edges[u, v]['weight'] = random.randint(1, 10)
 
 
+def generate_goldner_harary_graph():
+    """
+    Generates a Goldner Hararay graph.
+    """
+    G= nx.Graph()
+    G.add_node(0)
+    G.add_node(1)
+    G.add_node(2)
+    G.add_node(3)
+    G.add_node(4)
+    G.add_node(5)
+    G.add_node(6)
+    G.add_node(7)
+    G.add_node(8)
+    G.add_node(9)
+    G.add_node(10)
+
+    G.add_edge(0,1)
+    G.add_edge(0,2)
+    G.add_edge(0,3)
+    G.add_edge(0,4)
+    G.add_edge(0,5)
+    G.add_edge(0,6)
+    G.add_edge(0,7)
+    G.add_edge(0,10)
+
+    G.add_edge(1,4)
+    G.add_edge(1,5)
+    G.add_edge(8,4)
+    G.add_edge(8,5)
+
+    G.add_edge(2,5)
+    G.add_edge(2,6)
+    G.add_edge(9,5)
+    G.add_edge(9,6)
+
+    G.add_edge(10,3)
+    G.add_edge(10,4)
+    G.add_edge(10,5)
+    G.add_edge(10,6)
+    G.add_edge(10,7)
+    G.add_edge(10,8)
+    G.add_edge(10,9)
+
+    G.add_edge(3,4)
+    G.add_edge(4,5)
+    G.add_edge(5,6)
+    G.add_edge(6,7)
+    addPosition(G)
+
+    data = nx.node_link_data(G)
+    save_graph(data, 'goldner_harary_graph.json')
+
+    return G
+
+def generate_course_graph():
+    
+    G = nx.Graph()
+    G.add_node(0)
+    G.add_node(1)
+    G.add_node(2)
+    G.add_node(3)
+    G.add_node(4)
+    G.add_node(5)
+
+    G.add_edge(0,1)
+    G.add_edge(0,2)
+    G.add_edge(0,3)
+    G.add_edge(0,4)
+    G.add_edge(0,5)
+    G.add_edge(0,6)
+    G.add_edge(0,7)
+    G.add_edge(0,8)
+    G.add_edge(0,9)
+    G.add_edge(0,10)
+    G.add_edge(0,11)
+
+    G.add_edge(2,1)
+    G.add_edge(3,1)
+    G.add_edge(4,1)
+    G.add_edge(5,1)
+    G.add_edge(6,1)
+    G.add_edge(7,1)
+    G.add_edge(8,1)
+    G.add_edge(9,1)
+    G.add_edge(10,1)
+    G.add_edge(11,1)
+    addPosition(G)
+
+    data = nx.node_link_data(G)
+    save_graph(data, 'course_graph.json')
+
+    return G
+
+def generate_binary_tree():
+    G= nx.Graph()
+    G.add_node(0)
+    G.add_node(1)
+    G.add_node(2)
+    G.add_node(3)
+    G.add_node(4)
+    G.add_node(5)
+    G.add_node(6)
+    G.add_node(7)
+    G.add_node(8)
+    G.add_node(9)
+    G.add_node(10)
+
+    G.add_edge(0,1)
+    G.add_edge(1,2)
+    G.add_edge(1,3)
+    G.add_edge(2,4)
+    G.add_edge(4,7)
+    G.add_edge(4,8)
+    G.add_edge(1,3)
+    G.add_edge(3,5)
+    G.add_edge(3,6)
+    G.add_edge(5,9)
+    G.add_edge(5,10)
+    addPosition(G)
+
+    data = nx.node_link_data(G)
+    save_graph(data, 'binary_tree_graph.json')
+
+    return G    
+
+def generate_tertiary_tree():
+    G= nx.Graph()
+    G.add_node(0)
+    G.add_node(1)
+    G.add_node(2)
+    G.add_node(3)
+    G.add_node(4)
+    G.add_node(5)
+    G.add_node(6)
+    G.add_node(7)
+    G.add_node(8)
+    G.add_node(9)
+
+    G.add_edge(0,1)
+    G.add_edge(0,2)
+    G.add_edge(0,3)
+    G.add_edge(1,4)
+    G.add_edge(1,5)
+    G.add_edge(1,6)
+    G.add_edge(3,7)
+    G.add_edge(3,8)
+    G.add_edge(6,9)
+    addPosition(G)
+
+    data = nx.node_link_data(G)
+    save_graph(data, 'tertiary_tree.json')
+
+    return G
+
+def generate_dodecahedral_graph():
+
+    graph = nx.dodecahedral_graph()
+    addPosition(graph)
+
+    data = nx.node_link_data(graph)
+    save_graph(data, 'dodecahedral_graph.json')
+
+    return graph
+
 def generate_cycle_graph(n=3, seed=None, weight=False, direction=False):
     """
     Generates a simple cycle graph with n nodes.
